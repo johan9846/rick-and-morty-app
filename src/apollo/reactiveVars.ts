@@ -1,7 +1,24 @@
 import { makeVar } from "@apollo/client";
 
-// Variable reactiva para el carrito
-export const characterVar = makeVar([]);
+// Definir el tipo de los datos que manejarás en la variable reactiva
+interface Character {
+  id: string;
+  name: string;
+  species: string;
+  gender: string;
+  image: string;
+}
 
-// Variable reactiva para el usuario
+// Definir el tipo de la variable reactiva
+interface CharactersState {
+  allCharacter: Character[];
+  favoritesCharacter: Character[];
+}
+
+// Inicializar la variable reactiva con el tipo correcto
+export const allCharacterVar = makeVar<CharactersState>({
+  allCharacter: [],         // Arreglo de personajes
+  favoritesCharacter: [],   // Arreglo de favoritos
+});
+
 export const filterVar = makeVar(null);

@@ -1,13 +1,13 @@
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
-import { characterVar, filterVar } from "./reactiveVars"; // Importa las variables reactivas
+import { allCharacterVar, filterVar } from "./reactiveVars"; // Importa las variables reactivas
 
 const cache = new InMemoryCache({
   typePolicies: {
     Query: {
       fields: {
-        characterVar: {
+        allCharacterVar: {
           read() {
-            return characterVar();
+            return allCharacterVar();
           },
         },
         filterVar: {

@@ -1,10 +1,27 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCharacters } from "../../hooks/UseAllCharacters/useAllCharacters";
+import { allCharacterVar } from "../../apollo/reactiveVars";
+import { useReactiveVar } from "@apollo/client";
+import SidebarSection from "../../components/sidebar-section/SidebarSection";
 
 const Destktop = () => {
   const [page, setPage] = useState<number>(1);
   const { loading, error, characters } = useCharacters(page);
+
+  // Obtener el estado actual de la variable reactiva
+  const characterState = useReactiveVar(allCharacterVar);
+
+  useEffect(() => {
+    if (
+      characters &&
+      JSON.stringify(characters) !== JSON.stringify(characterState.allCharacter)
+    ) {
+      allCharacterVar({
+        allCharacter: characters, // Guardamos los personajes en 'allCharacter'
+        favoritesCharacter: characterState.favoritesCharacter, // Mantenemos favoritos sin cambios
+      });
+    }
+  }, [characters]); // Solo ejecuta el efecto si `characters` cambia
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -17,21 +34,11 @@ const Destktop = () => {
       </button>
       <button onClick={() => setPage((prev) => prev + 1)}>Siguiente</button>
 
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        {characters.map((character) => (
-          <div key={character.id} style={{ margin: 10, textAlign: "center" }}>
-            <img
-              src={character.image}
-              alt={character.name}
-              style={{ borderRadius: "50%" }}
-            />
-            <h3>{character.name}</h3>
-            <p>
-              {character.species} - {character.gender}
-            </p>
-          </div>
-        ))}
-      </div>
+      <SidebarSection
+        title="Starred Characters"
+        list={characterState.favoritesCharacter}
+      />
+      <SidebarSection title="CHARACTERS" list={characterState.allCharacter} />
     </div>
   );
 };
