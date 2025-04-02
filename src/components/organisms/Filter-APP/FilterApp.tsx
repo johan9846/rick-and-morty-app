@@ -1,6 +1,7 @@
 
-import {  filterResults } from "../../../utils/charactersUtils";
+import {  filterResults, orderList } from "../../../utils/charactersUtils";
 import lenIcon from "../../../assets/icons/len_icon.svg";
+import ListOrder from "../../molecules/List-Order/ListOrder";
 
 const Filter = () => {
   const handleSearch = (e:any) => {
@@ -19,6 +20,12 @@ const Filter = () => {
           />
         </label>
       </span>
+
+
+      <ListOrder
+        ascendantOrder={() => orderList("asc")}
+        descendantOrder={() => orderList("desc")}
+      />
     </div>
   );
 };

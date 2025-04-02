@@ -128,3 +128,25 @@ export const filterResults = (parameter: string) => {
     ),
   });
 };
+
+
+
+
+export const orderList = (order: "asc" | "desc") => {
+  const characterState = allCharacterVar();
+
+  // Asegurar que TypeScript entienda el tipo de los parámetros
+  const sortFunction = (a: CharacterVar, b: CharacterVar) =>
+    order === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+
+  allCharacterVar({
+    ...characterState,
+    allCharacter: [...characterState.allCharacter].sort(sortFunction),
+    favoritesCharacter: [...characterState.favoritesCharacter].sort(sortFunction),
+    listFilterCharacters: [...characterState.listFilterCharacters].sort(sortFunction),
+  });
+};
+
+
+
+
