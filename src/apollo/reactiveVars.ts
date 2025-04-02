@@ -23,13 +23,14 @@ interface CharactersState {
   allCharacter: Character[];
   favoritesCharacter: Character[];
   characterSelected: Character | null; // Ahora puede ser un objeto Character
+  listFilterCharacters: Character[] | []; // 🔥 Lista filtrada (corregido)
 }
-
 // Inicializar la variable reactiva con el tipo correcto
 export const allCharacterVar = makeVar<CharactersState>({
   allCharacter: [],         // Arreglo de personajes
   favoritesCharacter: [],   // Arreglo de favoritos
   characterSelected:  null,   // Arreglo de seleccionados
+  listFilterCharacters: [], // 🔥 Lista filtrada
 });
 
 export const filterVar = makeVar(null);

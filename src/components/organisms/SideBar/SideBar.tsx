@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useCharacters } from "../../../hooks/UseAllCharacters/useAllCharacters";
 import { allCharacterVar } from "../../../apollo/reactiveVars";
 import { useReactiveVar } from "@apollo/client";
 import SidebarSection from "../../molecules/Sidebar-Section/SidebarSection";
+import FilterApp from "../Filter-APP/FilterApp";
 
 const SideBar = () => {
   const [page, setPage] = useState<number>(1);
@@ -10,51 +11,52 @@ const SideBar = () => {
 
   // Obtener el estado actual de la variable reactiva
   const characterState = useReactiveVar(allCharacterVar);
+  const { allCharacter, favoritesCharacter, listFilterCharacters = [] } = characterState; // Desestructuración
 
   useEffect(() => {
     if (
       characters &&
-      JSON.stringify(characters) !== JSON.stringify(characterState.allCharacter)
+      JSON.stringify(characters) !== JSON.stringify(allCharacter)
     ) {
       allCharacterVar({
         allCharacter: characters.map((character) => ({
           ...character,
           isFavorite: false,
           occupation: "nada",
-        })), // Guardamos los personajes con las nuevas propiedades
-        favoritesCharacter: characterState.favoritesCharacter, // Mantenemos favoritos sin cambios
-        characterSelected:null
-      }); 
+        })), // Guardamos los personajes con nuevas propiedades
+        favoritesCharacter, // Mantener favoritos sin cambios
+        characterSelected: null,
+        listFilterCharacters: [],
+      });
     }
   }, [characters]); // Solo ejecuta el efecto si `characters` cambia
 
+  // Usar useMemo para decidir qué lista mostrar
+  const listToShow = useMemo(
+    () => ((listFilterCharacters ?? []).length > 0 ? listFilterCharacters : allCharacter),
+    [listFilterCharacters, allCharacter]
+  );
+  
+
+
+  console.log(listFilterCharacters, "holaaa")
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="bg-white h-screen flex flex-col pt-42 pr-20 pb-42 pl-20 md:bg-gray-50 ">
-      <div
-        className="w-full h-full overflow-auto "
-        style={{ border: "2px solid blue" }}
-      >
+    <div className="bg-white h-screen flex flex-col pt-42 pr-20 pb-42 pl-20 md:bg-gray-50">
+      <FilterApp />
+
+      <div className="w-full h-full overflow-auto" style={{ border: "2px solid blue" }}>
         <h1>Personajes de Rick and Morty</h1>
-        <button
-          onClick={() => setPage((prev) => prev - 1)}
-          disabled={page === 1}
-        >
+        <button onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
           Anterior
         </button>
         <button onClick={() => setPage((prev) => prev + 1)}>Siguiente</button>
 
-        <SidebarSection
-          title="Starred Characters"
-          list={characterState.allCharacter.filter((char) => char.isFavorite)}
-        />
-
-        <SidebarSection
-          title="CHARACTERS"
-          list={characterState.allCharacter.filter((char) => !char.isFavorite)}
-        />
+        <SidebarSection title="Starred Characters" list={listToShow.filter((char) => char.isFavorite)}
+         />
+        <SidebarSection title="CHARACTERS" list={listToShow.filter((char) => !char.isFavorite)} />
       </div>
     </div>
   );

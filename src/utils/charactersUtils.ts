@@ -17,34 +17,39 @@ export interface Comment {
   comment: string;
 }
 
-// Función para alternar favoritos
 export const toggleFavoriteCharacter = (character: CharacterVar) => {
   const characterState = allCharacterVar();
 
   const isFavorite = characterState.favoritesCharacter.some(
     (fav) => fav.id === character.id
   );
-
   const updatedCharacter = { ...character, isFavorite: !isFavorite };
 
+  // Actualizar la lista de todos los personajes
+  const updatedAllCharacters = characterState.allCharacter.map((char) =>
+    char.id === character.id ? updatedCharacter : char
+  );
+
+  // Si hay una búsqueda activa, actualizamos listFilterCharacters
+  const updatedListFilterCharacters = characterState.listFilterCharacters.map(
+    (char) => (char.id === character.id ? updatedCharacter : char)
+  );
+
   allCharacterVar({
-    allCharacter: characterState.allCharacter.map((char) =>
-      char.id === character.id ? updatedCharacter : char
-    ),
+    ...characterState, // Mantiene las demás propiedades sin cambios
+    allCharacter: updatedAllCharacters,
     favoritesCharacter: isFavorite
-      ? characterState.favoritesCharacter.filter((fav) => fav.id !== character.id)
+      ? characterState.favoritesCharacter.filter(
+          (fav) => fav.id !== character.id
+        )
       : [...characterState.favoritesCharacter, updatedCharacter],
     characterSelected:
       characterState.characterSelected?.id === character.id
-        ? updatedCharacter // Asegurar que `characterSelected` refleje el cambio en isFavorite
+        ? updatedCharacter
         : characterState.characterSelected,
+    listFilterCharacters: updatedListFilterCharacters, // 🔥 Aseguramos que se actualice la lista filtrada
   });
 };
-
-
-
-
-
 
 // Función para actualizar comentarios
 export const updateComments = (comment: Comment, id: string) => {
@@ -64,6 +69,7 @@ export const updateComments = (comment: Comment, id: string) => {
   };
 
   allCharacterVar({
+    ...characterState,
     allCharacter: characterState.allCharacter.map((char) =>
       char.id === id ? newCharacter : char
     ),
@@ -77,12 +83,6 @@ export const updateComments = (comment: Comment, id: string) => {
   });
 };
 
-
-
-
-
-
-
 export const deleteComment = (commentId: string, characterId: string) => {
   const characterState = allCharacterVar();
 
@@ -94,10 +94,14 @@ export const deleteComment = (commentId: string, characterId: string) => {
 
   const newCharacter = {
     ...updatedCharacter,
-    comments: updatedCharacter.comments?.filter(comment => comment.id !== commentId) || [],
+    comments:
+      updatedCharacter.comments?.filter(
+        (comment) => comment.id !== commentId
+      ) || [],
   };
 
   allCharacterVar({
+    ...characterState,
     allCharacter: characterState.allCharacter.map((char) =>
       char.id === characterId ? newCharacter : char
     ),
@@ -111,3 +115,16 @@ export const deleteComment = (commentId: string, characterId: string) => {
   });
 };
 
+export const filterResults = (parameter: string) => {
+  const characterState = allCharacterVar();
+
+  allCharacterVar({
+    ...characterState, // 🔥 Mantiene el estado actual
+    listFilterCharacters: characterState.allCharacter.filter(
+      (character) =>
+        character.name.toLowerCase().includes(parameter.toLowerCase()) ||
+        character.status.toLowerCase().includes(parameter.toLowerCase()) ||
+        character.species.toLowerCase().includes(parameter.toLowerCase())
+    ),
+  });
+};
