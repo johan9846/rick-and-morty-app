@@ -45,16 +45,16 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
       </header>
 
       {open && (
-        <div
-          className="w-full flex flex-col pt-16pb-16 "
-         
-        >
+        <div className="w-full flex flex-col pt-16 pb-16 ">
           {list.map((character) => (
             <div
               key={character.id}
-              className={`flex gap-3 items-center pt-12 mt-4 pb-12 pr-20  pl-20  relative hover:bg-primary100 cursor-pointer rounded-[8px] ${
-                character.id == selectedCharacter?.id ? "bg-primary100" : ""
-              }`}
+              className={`flex gap-3 border-b border-gray-300 items-center pt-12 mt-4 pb-12 pr-20 pl-20 relative hover:bg-primary100 cursor-pointer
+                ${
+                  character.id == selectedCharacter?.id
+                    ? "bg-primary100 rounded-[8px]"
+                    : "hover:rounded-[8px]"
+                }`}
               onClick={() => {
                 allCharacterVar({
                   ...allCharacterVar(), // Mantiene el estado actual completo
@@ -65,7 +65,6 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
             >
               {/* Imagen circular */}
               <div className="w-[42px] h-[34px] rounded-full overflow-hidden flex items-center justify-center">
-
                 <img
                   className="w-full h-full object-cover"
                   src={character.image}

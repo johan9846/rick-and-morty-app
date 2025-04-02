@@ -30,10 +30,10 @@ const CharacterSelected = () => {
   };
 
   return (
-    <div className="flex flex-col md:w-full h-full md:pt-40 pt-20 md:pr-100 pr-50 pb-40 md:pl-100 pl-50 overflow-auto">
-      <div className="mb-20 mt-20">
+    <div className="flex flex-col md:w-full h-full md:pt-40 pt-40 md:pr-100 pr-50 pb-40 md:pl-100 pl-50 overflow-auto" style={{border:"2px solid red"}}>
+      <div className="mb-20 mt-20 md:hidden">
         <img
-          className="md:hidden h-24 w-24 cursor-pointer"
+          className=" h-24 w-24 cursor-pointer"
           src={ArrowBackIcon}
           alt="arrow_back_icon"
           onClick={() => navigate(ROUTES.HOME)}
@@ -98,7 +98,7 @@ const CharacterSelected = () => {
 
       <div>
         <h3 className="text-lg font-greycliff font-bold">Comentarios</h3>
-        <ul className="mt-2 max-h-[200px] overflow-y-auto border border-gray-300 p-2 rounded">
+        <ul className="mt-2 h-auto overflow-auto border border-gray-300 pr-12 pl-12 rounded">
           {characterSelected.comments?.map((comment) => (
             <li
               key={comment.id}
