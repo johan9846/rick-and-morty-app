@@ -1,10 +1,9 @@
-
-import {  filterResults, orderList } from "../../../utils/charactersUtils";
+import { filterResults, orderList } from "../../../utils/charactersUtils";
 import lenIcon from "../../../assets/icons/len_icon.svg";
 import ListOrder from "../../molecules/List-Order/ListOrder";
 
 const Filter = () => {
-  const handleSearch = (e:any) => {
+  const handleSearch = (e: any) => {
     filterResults(e.target.value); // 🔥 Aplica el filtro en tiempo real
   };
 
@@ -19,13 +18,16 @@ const Filter = () => {
             placeholder="Search or filter results"
           />
         </label>
+        <div>ICONO</div>
       </span>
 
-
-      <ListOrder
-        ascendantOrder={() => orderList("asc")}
-        descendantOrder={() => orderList("desc")}
-      />
+      <div className="mt-[20px]">
+        {" "}
+        <ListOrder
+          ascendantOrder={() => orderList("asc")}
+          descendantOrder={() => orderList("desc")}
+        />
+      </div>
     </div>
   );
 };

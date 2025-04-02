@@ -10,16 +10,16 @@ const LikeIcon = ({ like, onClick }: LikeIconProps) => {
   return (
     <div
       onClick={onClick}
-      className="w-32 h-32 bg-white flex items-center justify-center rounded-3xl z-20"
+      className="w-[32px] h-[32px] bg-white flex items-center justify-center rounded-3xl z-20"
     >
       {like ? (
         <img
-          className="w-18 h-15-36"
+          className="w-[18px] h-[15.3px]"
           src={heartLikeIcon}
           alt="heartIcon"
         />
       ) : (
-        <img className="w-18 h-15-36 " src={heartIcon} alt="heartIcon"  style={{border:"2px solid red"}}/>
+        <img className="w-[20px] h-[20px]" src={heartIcon} alt="heartIcon" />
       )}
     </div>
   );

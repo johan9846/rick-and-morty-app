@@ -23,7 +23,8 @@ const ProfileLike = ({
           <LikeIcon onClick={clickLike} like={like} />
         </div>
       </div>
-      <h1 className="text-24 h-32 font-greycliff font-bold">{name}</h1>
+      <h1 className="text-2xl h-32 font-greycliff font-bold pt-5">{name}</h1>
+
     </header>
   );
 };
