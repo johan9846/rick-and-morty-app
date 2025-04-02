@@ -7,6 +7,9 @@ interface Character {
   species: string;
   gender: string;
   image: string;
+  comments?: Comment[];
+  occupation?: string;
+  isFavorite?: boolean;
 }
 
 // Definir el tipo de la variable reactiva
