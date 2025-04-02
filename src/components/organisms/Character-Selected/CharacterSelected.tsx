@@ -96,7 +96,7 @@ const CharacterSelected = () => {
         </button>
       </form>
 
-      <div>
+     
         <h3 className="text-lg font-greycliff font-bold">Comentarios</h3>
         <ul className="mt-2 h-auto overflow-auto border border-gray-300 pr-12 pl-12 rounded">
           {characterSelected.comments?.map((comment) => (
@@ -114,7 +114,7 @@ const CharacterSelected = () => {
             </li>
           ))}
         </ul>
-      </div>
+     
     </div>
   );
 };
