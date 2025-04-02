@@ -5,13 +5,17 @@ export interface Character {
     species: string;
     gender: string;
     image: string;
+    status:string;
     comments?: Comment[];
     occupation?: string;
     isFavorite?: boolean;
 
-
   }
-  
+
+  export interface Comment {
+    id: string;
+    comment: string;
+  }
   // Definir la interfaz de la respuesta de la API
   export interface CharactersData {
     characters: {

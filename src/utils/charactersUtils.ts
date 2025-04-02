@@ -6,42 +6,108 @@ export interface CharacterVar {
   species: string;
   gender: string;
   image: string;
-  comments?: Comment[];
+  status: string;
+  comments?: Comment[]; // Asegúrate de que los comentarios sean un array de strings
   occupation?: string;
   isFavorite?: boolean;
 }
 
+export interface Comment {
+  id: string;
+  comment: string;
+}
+
 // Función para alternar favoritos
 export const toggleFavoriteCharacter = (character: CharacterVar) => {
-  // Obtenemos el estado actual
   const characterState = allCharacterVar();
 
-  // Determinamos si el personaje ya es favorito
   const isFavorite = characterState.favoritesCharacter.some(
     (fav) => fav.id === character.id
   );
 
-  if (isFavorite) {
-    // Si está en favoritos, lo quitamos de favoritesCharacter y lo volvemos a agregar a allCharacter
-    allCharacterVar({
-      allCharacter: [
-        ...characterState.allCharacter,
-        { ...character, isFavorite: false },
-      ],
-      favoritesCharacter: characterState.favoritesCharacter.filter(
-        (fav) => fav.id !== character.id
-      ),
-    });
-  } else {
-    // Si no está en favoritos, lo pasamos a favoritesCharacter y lo eliminamos de allCharacter
-    allCharacterVar({
-      allCharacter: characterState.allCharacter.filter(
-        (char) => char.id !== character.id
-      ),
-      favoritesCharacter: [ 
-        ...characterState.favoritesCharacter,
-        { ...character, isFavorite: true },
-      ],
-    });
-  }
+  const updatedCharacter = { ...character, isFavorite: !isFavorite };
+
+  allCharacterVar({
+    allCharacter: characterState.allCharacter.map((char) =>
+      char.id === character.id ? updatedCharacter : char
+    ),
+    favoritesCharacter: isFavorite
+      ? characterState.favoritesCharacter.filter((fav) => fav.id !== character.id)
+      : [...characterState.favoritesCharacter, updatedCharacter],
+    characterSelected:
+      characterState.characterSelected?.id === character.id
+        ? updatedCharacter // Asegurar que `characterSelected` refleje el cambio en isFavorite
+        : characterState.characterSelected,
+  });
 };
+
+
+
+
+
+
+// Función para actualizar comentarios
+export const updateComments = (comment: Comment, id: string) => {
+  const characterState = allCharacterVar();
+
+  // Buscar el personaje en allCharacter
+  const updatedCharacter = characterState.allCharacter.find(
+    (character) => character.id === id
+  );
+
+  if (!updatedCharacter) return;
+
+  // Crear una nueva versión del personaje con el comentario agregado
+  const newCharacter = {
+    ...updatedCharacter,
+    comments: [comment, ...(updatedCharacter.comments ?? [])], // Asegurar que comments sea del tipo Comment[]
+  };
+
+  allCharacterVar({
+    allCharacter: characterState.allCharacter.map((char) =>
+      char.id === id ? newCharacter : char
+    ),
+    favoritesCharacter: characterState.favoritesCharacter.map((char) =>
+      char.id === id ? newCharacter : char
+    ),
+    characterSelected:
+      characterState.characterSelected?.id === id
+        ? newCharacter
+        : characterState.characterSelected,
+  });
+};
+
+
+
+
+
+
+
+export const deleteComment = (commentId: string, characterId: string) => {
+  const characterState = allCharacterVar();
+
+  const updatedCharacter = characterState.allCharacter.find(
+    (character) => character.id === characterId
+  );
+
+  if (!updatedCharacter) return;
+
+  const newCharacter = {
+    ...updatedCharacter,
+    comments: updatedCharacter.comments?.filter(comment => comment.id !== commentId) || [],
+  };
+
+  allCharacterVar({
+    allCharacter: characterState.allCharacter.map((char) =>
+      char.id === characterId ? newCharacter : char
+    ),
+    favoritesCharacter: characterState.favoritesCharacter.map((char) =>
+      char.id === characterId ? newCharacter : char
+    ),
+    characterSelected:
+      characterState.characterSelected?.id === characterId
+        ? newCharacter
+        : characterState.characterSelected,
+  });
+};
+

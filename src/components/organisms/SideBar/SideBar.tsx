@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useCharacters } from "../../../hooks/UseAllCharacters/useAllCharacters";
 import { allCharacterVar } from "../../../apollo/reactiveVars";
 import { useReactiveVar } from "@apollo/client";
-import SidebarSection from "../../molecules/sidebar-section/SidebarSection";
+import SidebarSection from "../../molecules/Sidebar-Section/SidebarSection";
 
 const SideBar = () => {
   const [page, setPage] = useState<number>(1);
@@ -17,13 +17,14 @@ const SideBar = () => {
       JSON.stringify(characters) !== JSON.stringify(characterState.allCharacter)
     ) {
       allCharacterVar({
-        allCharacter: characters.map(character => ({
+        allCharacter: characters.map((character) => ({
           ...character,
           isFavorite: false,
-          occupation: "nada"
+          occupation: "nada",
         })), // Guardamos los personajes con las nuevas propiedades
         favoritesCharacter: characterState.favoritesCharacter, // Mantenemos favoritos sin cambios
-      });
+        characterSelected:null
+      }); 
     }
   }, [characters]); // Solo ejecuta el efecto si `characters` cambia
 
@@ -32,19 +33,28 @@ const SideBar = () => {
 
   return (
     <div className="bg-white h-screen flex flex-col pt-42 pr-20 pb-42 pl-20 md:bg-gray-50 ">
-       <div className="w-full h-full overflow-auto " style={{border:"2px solid blue"}}>
-      
-      <h1>Personajes de Rick and Morty</h1>
-      <button onClick={() => setPage((prev) => prev - 1)} disabled={page === 1}>
-        Anterior
-      </button>
-      <button onClick={() => setPage((prev) => prev + 1)}>Siguiente</button>
+      <div
+        className="w-full h-full overflow-auto "
+        style={{ border: "2px solid blue" }}
+      >
+        <h1>Personajes de Rick and Morty</h1>
+        <button
+          onClick={() => setPage((prev) => prev - 1)}
+          disabled={page === 1}
+        >
+          Anterior
+        </button>
+        <button onClick={() => setPage((prev) => prev + 1)}>Siguiente</button>
 
-      <SidebarSection
-        title="Starred Characters"
-        list={characterState.favoritesCharacter}
-      />
-      <SidebarSection title="CHARACTERS" list={characterState.allCharacter} />
+        <SidebarSection
+          title="Starred Characters"
+          list={characterState.allCharacter.filter((char) => char.isFavorite)}
+        />
+
+        <SidebarSection
+          title="CHARACTERS"
+          list={characterState.allCharacter.filter((char) => !char.isFavorite)}
+        />
       </div>
     </div>
   );
