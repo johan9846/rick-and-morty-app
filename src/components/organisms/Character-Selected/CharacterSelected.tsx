@@ -1,6 +1,6 @@
 import { useReactiveVar } from "@apollo/client";
 import { allCharacterVar } from "../../../apollo/reactiveVars";
-import ProfileLike from "../../molecules/ProfileLike/ProfileLike";
+import ProfileLike from "../../molecules/Profile-Like/ProfileLike";
 import { toggleFavoriteCharacter } from "../../../utils/charactersUtils";
 import { useState } from "react";
 import { updateComments, deleteComment } from "../../../utils/charactersUtils";

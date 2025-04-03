@@ -28,3 +28,7 @@ export interface Character {
     page: number;
   }
   
+  export interface FilterCharactersVars {
+    species?: string | null;
+    gender?: string | null;
+  }

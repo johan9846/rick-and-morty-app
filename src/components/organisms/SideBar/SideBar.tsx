@@ -50,6 +50,7 @@ const SideBar = () => {
 
   return (
     <div className="bg-white h-screen flex flex-col pt-42 pr-20 pb-42 pl-20 md:bg-gray-50">
+      
       <FilterApp />
 
       {loading ? (

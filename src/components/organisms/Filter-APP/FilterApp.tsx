@@ -1,6 +1,7 @@
 import { filterResults, orderList } from "../../../utils/charactersUtils";
 import lenIcon from "../../../assets/icons/len_icon.svg";
 import ListOrder from "../../molecules/List-Order/ListOrder";
+import FilterMenu from "../../molecules/Filter-Menu/FilterMenu";
 
 const Filter = () => {
   const handleSearch = (e: any) => {
@@ -8,7 +9,7 @@ const Filter = () => {
   };
 
   return (
-    <div>
+    <>
       <span className="flex relative items-center justify-between w-full bg-[#F3F4F6] h-52 rounded-[8px] pt-9 pr-13 pb-9 pl-20">
         <img src={lenIcon} alt="lenIcon" />
         <label className="flex relative w-full h-34">
@@ -18,7 +19,7 @@ const Filter = () => {
             placeholder="Search or filter results"
           />
         </label>
-        <div>ICONO</div>
+        <div><FilterMenu/></div>
       </span>
 
       <div className="mt-[20px]">
@@ -28,7 +29,7 @@ const Filter = () => {
           descendantOrder={() => orderList("desc")}
         />
       </div>
-    </div>
+    </>
   );
 };
 
