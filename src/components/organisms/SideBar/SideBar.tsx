@@ -50,21 +50,28 @@ const SideBar = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="bg-white h-screen flex flex-col pt-42 pr-20 pb-42 pl-20 md:bg-gray-50" style={{border:"2px solid red"}}>
+    <div
+      className="bg-white h-screen flex flex-col pt-42 pr-20 pb-42 pl-20 md:bg-gray-50"
+      style={{ border: "2px solid red" }}
+    >
       <FilterApp />
 
       {loading ? (
         <p>Loading...</p>
       ) : (
         <>
-          <div
-            className="w-full h-auto overflow-auto mt-8"
-          >
+          <div className="w-full h-auto overflow-auto mt-8">
             <SidebarSection
               title={`STARRED CHARACTERS (${favoritesCharacter.length})`}
-              list={favoritesCharacter}
-
+              list={
+                (listFilterCharacters ?? []).length > 0
+                  ? listFilterCharacters.filter((char) =>
+                      favoritesCharacter.some((fav) => fav.id === char.id)
+                    )
+                  : favoritesCharacter
+              }
             />
+
             <SidebarSection
               title={`CHARACTERS (${listToShow.length})`}
               list={listToShow.filter(
