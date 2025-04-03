@@ -39,13 +39,14 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
     <>
       <header
         onClick={() => setOpen(!open)}
-        className="min-h-56 flex items-center cursor-pointer hover:bg-primary100"
+        className=" pt-12 pb-12 flex items-center cursor-pointer hover:bg-primary100"
+     
       >
         <h1 className="text-12 w-full pr-16 pl-16 text-gray">{title}</h1>
       </header>
 
       {open && (
-        <div className="w-full flex flex-col pt-16 pb-16 ">
+        <div className="w-full flex flex-col  pb-16 ">
           {list.map((character) => (
             <div
               key={character.id}
