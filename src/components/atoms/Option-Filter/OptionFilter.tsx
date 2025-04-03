@@ -59,12 +59,12 @@ const OptionFilter = () => {
   };
   return (
     <div className="bg-white rounded-lg shadow-md ">
-      <div className="text-[14px] font-medium mb-2 text-[#6B7280]">Gender</div>
+      <div className="text-[14px] font-medium font-greycliff mb-2 text-[#6B7280]">Gender</div>
       <div className="flex gap-2 mb-6 ">
         {["All", "Male", "Female"].map((option) => (
           <button
             key={option}
-            className={`w-[102px] h-[44px] ${
+            className={`w-[102px]  h-[44px] font-greycliff ${
               gender === "All" || gender === option
                 ? "bg-[#EEE3FF] text-[14px] font-semibold rounded-[8px] text-[#8054C7]"
                 : "border border-[1px] border-[#E5E7EB] text-[14px] font-semibold rounded-[8px] text-[#111827]"
@@ -76,13 +76,13 @@ const OptionFilter = () => {
         ))}
       </div>
 
-      <div className="text-[14px] font-medium mb-2 text-[#6B7280]">Specie</div>
+      <div className="text-[14px] font-medium font-greycliff mb-2 text-[#6B7280]">Specie</div>
 
       <div className="flex gap-2 mb-6">
         {["All", "Human", "Alien"].map((option) => (
           <button
             key={option}
-            className={`w-[102px] h-[44px] ${
+            className={`w-[102px] h-[44px] font-greycliff ${
               species === "All" || species === option
                 ? "bg-[#EEE3FF] text-[14px] font-semibold rounded-[8px] text-[#8054C7]"
                 : "border border-[1px] border-[#E5E7EB] text-[14px] font-semibold rounded-[8px] text-[#111827]"

@@ -30,7 +30,7 @@ const CharacterSelected = () => {
   };
 
   return (
-    <div className="flex flex-col md:w-full h-full md:pt-40 pt-40 md:pr-100 pr-50 pb-40 md:pl-100 pl-50 overflow-auto" style={{border:"2px solid red"}}>
+    <div className="flex flex-col md:w-full h-full md:pt-40 pt-40 md:pr-100 pr-50 pb-40 md:pl-100 pl-50 overflow-auto" >
       <div className="mb-20 mt-20 md:hidden">
         <img
           className=" h-24 w-24 cursor-pointer"

@@ -39,18 +39,19 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
     <>
       <header
         onClick={() => setOpen(!open)}
-        className=" pt-12 pb-12 flex items-center cursor-pointer hover:bg-primary100"
+        className=" h-[48px] flex items-center cursor-pointer hover:bg-primary100"
      
       >
-        <h1 className="text-12 w-full pr-16 pl-16 text-gray">{title}</h1>
+
+        <div className="text-12 w-full font-semibold text-[14px] pr-20 pl-16 text-[#6B7280] leading-[16px] tracking-wide">{title}</div>
       </header>
 
       {open && (
-        <div className="w-full flex flex-col  pb-16 ">
+        <div className="w-full flex flex-col " >
           {list.map((character) => (
             <div
               key={character.id}
-              className={`flex gap-3 border-b border-gray-300 items-center pt-12 mt-4 pb-12 pr-20 pl-20 relative hover:bg-primary100 cursor-pointer
+              className={`pt-16 mt-4  pr-[21px] pl-20 relative hover:bg-primary100 cursor-pointer
                 ${
                   character.id == selectedCharacter?.id
                     ? "bg-primary100 rounded-[8px]"
@@ -69,8 +70,9 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
                 navigate(ROUTES.SELECTED_CHARACTER);
               }}
             >
+              <div className="flex gap-[5px] items-center border-b pb-16 border-gray-300 w-full hover:border-transparent focus:border-transparent">
               {/* Imagen circular */}
-              <div className="w-[42px] h-[34px] rounded-full overflow-hidden flex items-center justify-center">
+              <div className="w-[36.8px] h-[32px] rounded-full   overflow-hidden flex items-center justify-center">
                 <img
                   className="w-full h-full object-cover"
                   src={character.image}
@@ -81,13 +83,13 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
               {/* Contenedor de información */}
               <div className="flex justify-between items-center w-full ">
                 <div>
-                  <h3 className="text-16 font-greycliff font-semibold text-black">
+                  <div className="text-16 font-greycliff font-semibold text-custom_black">
                     {character.name}
-                  </h3>
+                  </div>
 
-                  <p className="text-16 text-custom_gray">
+                  <div className="text-16 text-custom_gray font-greycliff ">
                     {character.species}
-                  </p>
+                  </div>
                 </div>
 
                 {/* Icono de "Me gusta" */}
@@ -95,6 +97,7 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
                   onClick={() => toggleFavoriteCharacter(character)}
                   like={!!character.isFavorite}
                 />
+              </div>
               </div>
             </div>
           ))}

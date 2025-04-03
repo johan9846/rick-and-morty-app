@@ -18,7 +18,6 @@ const SideBar = () => {
     listFilterCharacters = [],
   } = characterState; // Desestructuración
 
-  
   useEffect(() => {
     fetchCharacters();
   }, []); // Escuchar cambios en characters y allCharacter
@@ -52,7 +51,14 @@ const SideBar = () => {
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div className="bg-white h-screen flex flex-col pt-42 pr-20 pb-42 pl-20 md:bg-gray-50">
+    <div
+      className="bg-white h-screen flex flex-col pt-42 pr-16 pb-[112px] pl-16 md:bg-gray-50"
+     
+    >
+      <h1 className="text-2xl min-h-40 mb-17 font-bold" >
+        Rick and Morty list
+      </h1>
+
       <FilterApp />
 
       {loading ? (
@@ -61,14 +67,18 @@ const SideBar = () => {
         <>
           <div
             className="w-full h-auto overflow-auto"
-            style={{ border: "2px solid blue" }}
+         
           >
             <SidebarSection
-              title="Starred Characters"
+              title={`STARRED CHARACTERS (${
+                listToShow.filter((char) => char.isFavorite).length
+              })`}
               list={listToShow.filter((char) => char.isFavorite)}
             />
             <SidebarSection
-              title="CHARACTERS"
+              title={`CHARACTERS (${
+                listToShow.filter((char) => !char.isFavorite).length
+              })`}
               list={listToShow.filter((char) => !char.isFavorite)}
             />
           </div>

@@ -1,5 +1,3 @@
-
-
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -7,6 +5,7 @@ export default {
     extend: {
       colors: {
         custom_gray: "#6B7280",
+        custom_black: "#111827",
         custom_gray_dark: "#F3F4F6",
         custom_black: "#111827",
         custom_blue: "#2563EB",
@@ -16,8 +15,10 @@ export default {
         primary700: "#5A3696",
         secondary600: "#63D838",
       },
+      letterSpacing: {
+        "5p": "5%", // Agrega un espaciado del 5%
+      },
       spacing: {
-        
         1: "1px",
         4: "4px",
         8: "8px",
@@ -25,7 +26,7 @@ export default {
         12: "12px",
         13: "13px",
         14: "14px",
-        16:'16px',
+        16: "16px",
         17: "17px",
         18: "18px",
         20: "20px",
@@ -37,7 +38,7 @@ export default {
         42: "42px",
         44: "44px",
         45: "45px",
-        50: '50px',
+        50: "50px",
         52: "52px",
         56: "56px",
         64: "64px",
@@ -48,8 +49,8 @@ export default {
         278: "278px",
         343: "343px",
         375: "375px",
-        "n10%":'-10%',
-        "60%":"60%",
+        "n10%": "-10%",
+        "60%": "60%",
         "110%": "110%",
         "15-36": "15.36px",
         "88-5": "88.5px",
