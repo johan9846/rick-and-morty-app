@@ -5,7 +5,7 @@ const GET_FILTERED_CHARACTERS = gql`
   query GetCharacters($species: String, $gender: String) {
     characters(filter: { species: $species, gender: $gender }) {
       results {
-      id
+        id
         name
         image
         species
@@ -16,14 +16,16 @@ const GET_FILTERED_CHARACTERS = gql`
 `;
 
 export function useFilteredCharacters() {
-  const [fetchCharacters, { loading, error, data }] = useLazyQuery<CharactersData, FilterCharactersVars>(
-    GET_FILTERED_CHARACTERS
-  );
+  // Solo ejecuta la consulta cuando `fetchCharacters` es llamado
+  const [fetchCharacters, { loading, error, data }] = useLazyQuery<
+    CharactersData,
+    FilterCharactersVars
+  >(GET_FILTERED_CHARACTERS);
 
   return {
     loading,
     error,
     characters: data?.characters?.results || [],
-    fetchCharacters,
+    fetchCharacters, // Llamar manualmente para obtener los personajes
   };
 }

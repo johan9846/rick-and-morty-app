@@ -1,14 +1,43 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters"; // Importa el hook
+import { allCharacterVar } from "../../../apollo/reactiveVars";
+import { useReactiveVar } from "@apollo/client";
 
-const FilterPanel = () => {
+const OptionFilter = () => {
   const [species, setSpecies] = useState<string | null>("All");
   const [gender, setGender] = useState<string | null>("All");
+  const { characters, fetchCharacters } = useFilteredCharacters();
 
-  const { loading, error, characters, fetchCharacters } = useFilteredCharacters();
+  const characterState = useReactiveVar(allCharacterVar);
+  const { allCharacter, favoritesCharacter } = characterState; // Desestructuración
+  
+  useEffect(() => {
+    if (characters && characters.length > 0) {
+      // Crear un mapa con los personajes actuales para acceso rápido por ID
+      const characterMap = new Map(allCharacter.map((char) => [char.id, char]));
+  
+      // Generar la nueva lista de personajes
+      const updatedCharacters = characters.map((character) =>
+        characterMap.has(character.id)
+          ? characterMap.get(character.id)! // Mantiene los datos si ya existe
+          : { ...character, isFavorite: false, occupation: "nada" } // Agrega los nuevos con valores por defecto
+      );
+  
+      // Solo actualiza si hay cambios en la lista
+      if (JSON.stringify(updatedCharacters) !== JSON.stringify(allCharacter)) {
+        allCharacterVar({
+          allCharacter: updatedCharacters,
+          favoritesCharacter, // Mantiene los favoritos
+          characterSelected: null,
+          listFilterCharacters: updatedCharacters, // Asegurar que la lista de filtrados también se actualice
+        });
+      }
+    }
+  }, [characters, allCharacter]); // Escuchar cambios en characters y allCharacter
+  
 
   const handleGenderClick = (option: string) => {
-    setGender(option === "All" ? "All" : option);
+    setGender(option === "All" ? "All" : option);           
   };
 
   const handleSpeciesClick = (option: string) => {
@@ -16,19 +45,15 @@ const FilterPanel = () => {
   };
 
   const handleFilter = () => {
-    console.log("Filters Applied:", {
-      species: species === "All" ? "All Species" : species,
-      gender: gender === "All" ? "All Genders" : gender,
-    });
+    const filters = {
+      species: species === "All" ? null : species,
+      gender: gender === "All" ? null : gender,
+    };
 
-    fetchCharacters({
-      variables: {
-        species: species === "All" ? null : species,
-        gender: gender === "All" ? null : gender,
-      },
-    });
+    console.log("Filters Applied:", filters);
+
+    fetchCharacters({ variables: filters });
   };
-
   return (
     <div className="p-6 bg-white rounded-lg shadow-md w-80">
       <h3 className="text-lg font-semibold mb-2">Gender</h3>
@@ -37,7 +62,9 @@ const FilterPanel = () => {
           <button
             key={option}
             className={`px-4 py-2 rounded-lg ${
-              gender === "All" || gender === option ? "bg-purple-300" : "bg-gray-200"
+              gender === "All" || gender === option
+                ? "bg-purple-300"
+                : "bg-gray-200"
             }`}
             onClick={() => handleGenderClick(option)}
           >
@@ -52,7 +79,9 @@ const FilterPanel = () => {
           <button
             key={option}
             className={`px-4 py-2 rounded-lg ${
-              species === "All" || species === option ? "bg-purple-300" : "bg-gray-200"
+              species === "All" || species === option
+                ? "bg-purple-300"
+                : "bg-gray-200"
             }`}
             onClick={() => handleSpeciesClick(option)}
           >
@@ -67,19 +96,8 @@ const FilterPanel = () => {
       >
         Filter
       </button>
-
-      {loading && <p className="mt-4">Loading...</p>}
-      {error && <p className="mt-4 text-red-500">Error: {error.message}</p>}
-      <div className="mt-4">
-        {characters.map((char) => (
-          <div key={char.id} className="flex items-center gap-2">
-            <img src={char.image} alt={char.name} className="w-10 h-10 rounded-full" />
-            <p>{char.name}</p>
-          </div>
-        ))}
-      </div>
     </div>
   );
 };
 
-export default FilterPanel;
+export default OptionFilter;
