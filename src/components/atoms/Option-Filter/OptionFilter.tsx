@@ -1,11 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters"; // Importa el hook
 import { allCharacterVar } from "../../../apollo/reactiveVars";
 import { useReactiveVar } from "@apollo/client";
 
 import { CharactersData } from "../../../hooks/interfaces/allCharacter.interface";
+import ROUTES from "../../../constants/routes/Routes";
 
 const OptionFilter = () => {
+  const navigate = useNavigate();
   const [species, setSpecies] = useState<string | null>("All");
   const [gender, setGender] = useState<string | null>("All");
 
@@ -35,17 +38,27 @@ const OptionFilter = () => {
           listFilterCharacters: updatedCharacters,
         });
       }
+
+      navigate(ROUTES.HOME);
     }
   };
 
   const { fetchCharacters } = useFilteredCharacters(onCharactersFetched);
 
   const handleGenderClick = (option: string) => {
-    setGender(option === "All" ? "All" : option);
+    if (option === "All") {
+      setGender("All");
+    } else {
+      setGender(option);
+    }
   };
 
   const handleSpeciesClick = (option: string) => {
-    setSpecies(option === "All" ? "All" : option);
+    if (option === "All") {
+      setSpecies("All");
+    } else {
+      setSpecies(option);
+    }
   };
 
   const handleFilter = () => {
@@ -54,21 +67,23 @@ const OptionFilter = () => {
       gender: gender === "All" ? null : gender,
     };
 
-
     fetchCharacters({ variables: filters });
   };
   return (
-    <div className="bg-white rounded-lg shadow-md ">
-      <div className="text-[14px] font-medium font-greycliff mb-2 text-[#6B7280]">Gender</div>
-      <div className="flex gap-2 mb-6 ">
+    <div>
+      <div className="text-[14px] font-medium font-greycliff mb-2 text-[#6B7280]">
+        Gender
+      </div>
+      <div className="flex gap-2 mb-6 justify-between ">
         {["All", "Male", "Female"].map((option) => (
           <button
             key={option}
-            className={`w-[102px]  h-[44px] font-greycliff ${
-              gender === "All" || gender === option
-                ? "bg-[#EEE3FF] text-[14px] font-semibold rounded-[8px] text-[#8054C7]"
-                : "border border-[1px] border-[#E5E7EB] text-[14px] font-semibold rounded-[8px] text-[#111827]"
-            }`}
+            className={`w-[102px] h-[44px] font-greycliff rounded-[8px] text-[14px] font-semibold
+      ${
+        gender === option
+          ? "bg-[#EEE3FF] text-[#8054C7]"
+          : "border border-[1px] border-[#E5E7EB] text-[#111827]"
+      }`}
             onClick={() => handleGenderClick(option)}
           >
             {option}
@@ -76,17 +91,20 @@ const OptionFilter = () => {
         ))}
       </div>
 
-      <div className="text-[14px] font-medium font-greycliff mb-2 text-[#6B7280]">Specie</div>
+      <div className="text-[14px] font-medium font-greycliff mb-2 text-[#6B7280]">
+        Specie
+      </div>
 
-      <div className="flex gap-2 mb-6">
+      <div className="flex gap-2 mb-6 justify-between">
         {["All", "Human", "Alien"].map((option) => (
           <button
             key={option}
-            className={`w-[102px] h-[44px] font-greycliff ${
-              species === "All" || species === option
-                ? "bg-[#EEE3FF] text-[14px] font-semibold rounded-[8px] text-[#8054C7]"
-                : "border border-[1px] border-[#E5E7EB] text-[14px] font-semibold rounded-[8px] text-[#111827]"
-            }`}
+            className={`w-[102px] h-[44px] font-greycliff rounded-[8px] text-[14px] font-semibold
+      ${
+        species === option
+          ? "bg-[#EEE3FF] text-[#8054C7]"
+          : "border border-[1px] border-[#E5E7EB] text-[#111827]"
+      }`}
             onClick={() => handleSpeciesClick(option)}
           >
             {option}
@@ -95,7 +113,9 @@ const OptionFilter = () => {
       </div>
 
       <button
-        className="w-full bg-primary600 h-[38px]  text-[14px] text-white rounded-lg hover:bg-primary700"
+        className="bg-primary600 h-[38px] text-[14px] text-white rounded-lg hover:bg-primary700 
+   w-full md:max-w-full max-w-[calc(100%-48px)] mx-auto 
+   absolute md:static bottom-[24px] left-0 right-0"
         onClick={handleFilter}
       >
         Filter

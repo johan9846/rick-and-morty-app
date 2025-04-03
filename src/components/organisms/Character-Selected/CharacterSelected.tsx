@@ -30,8 +30,9 @@ const CharacterSelected = () => {
   };
 
   return (
-    <div className="flex flex-col md:w-full h-full md:pt-40 pt-40 md:pr-100 pr-50 pb-40 md:pl-100 pl-50 overflow-auto" >
-      <div className="mb-20 mt-20 md:hidden">
+    <div className="flex flex-col md:w-full h-full p-24 pt-0 md:pt-40 md:pr-100 md:pb-40 md:pl-100  overflow-auto">
+      
+      <div className="h-[70px] md:hidden flex items-center ">
         <img
           className=" h-24 w-24 cursor-pointer"
           src={ArrowBackIcon}
@@ -49,7 +50,7 @@ const CharacterSelected = () => {
         }
       />
 
-      <div className="flex flex-col w-full pb-12">
+      <div className="flex flex-col w-full h-[74px] justify-center mt-16">
         <h3 className="text-16 font-greycliff font-medium text-black">
           Specie
         </h3>
@@ -58,7 +59,7 @@ const CharacterSelected = () => {
 
       <hr />
 
-      <div className="flex flex-col w-full pt-16 pb-12">
+      <div className="flex flex-col w-full h-[74px] justify-center">
         <h3 className="text-16 font-greycliff font-medium text-black">
           Status
         </h3>
@@ -67,7 +68,7 @@ const CharacterSelected = () => {
 
       <hr />
 
-      <div className="flex flex-col w-full pt-16 pb-12">
+      <div className="flex flex-col w-full h-[74px] justify-center">
         <h3 className="text-16 font-greycliff font-medium text-black">
           Specie
         </h3>
@@ -96,25 +97,23 @@ const CharacterSelected = () => {
         </button>
       </form>
 
-     
-        <h3 className="text-lg font-greycliff font-bold">Comentarios</h3>
-        <ul className="mt-2 h-auto overflow-auto border border-gray-300 pr-12 pl-12 rounded">
-          {characterSelected.comments?.map((comment) => (
-            <li
-              key={comment.id}
-              className="flex justify-between items-center border-b py-2"
+      <h3 className="text-lg font-greycliff font-bold">Comentarios</h3>
+      <ul className="mt-2 h-auto overflow-auto border border-gray-300 pr-12 pl-12 rounded">
+        {characterSelected.comments?.map((comment) => (
+          <li
+            key={comment.id}
+            className="flex justify-between items-center border-b py-2"
+          >
+            <span>{comment.comment}</span>
+            <button
+              onClick={() => deleteComment(comment.id, characterSelected.id)}
+              className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
             >
-              <span>{comment.comment}</span>
-              <button
-                onClick={() => deleteComment(comment.id, characterSelected.id)}
-                className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-700"
-              >
-                Delete
-              </button>
-            </li>
-          ))}
-        </ul>
-     
+              Delete
+            </button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

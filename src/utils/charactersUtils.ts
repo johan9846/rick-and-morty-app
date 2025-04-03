@@ -120,7 +120,6 @@ export const deleteComment = (commentId: string, characterId: string) => {
 export const filterResults = (parameter: string) => {
   const characterState = allCharacterVar();
 
-  // Verificar si el parámetro está vacío para resetear la lista
   if (!parameter.trim()) {
     allCharacterVar({
       ...characterState,
@@ -130,7 +129,6 @@ export const filterResults = (parameter: string) => {
     return;
   }
 
-  // Combinar allCharacter y favoritesCharacter asegurando que no haya duplicados
   const combinedCharacters = [
     ...characterState.allCharacter,
     ...characterState.favoritesCharacter.filter(
@@ -138,25 +136,21 @@ export const filterResults = (parameter: string) => {
     ),
   ];
 
-  // Aplicar el filtro a la lista combinada
   const filteredCharacters = combinedCharacters.filter((character) =>
-    [character.name, character.status, character.species]
-      .map((value) => value.toLowerCase())
+    [character.name ?? "", character.status ?? "", character.species ?? ""]
+      .map((value) => value.toLowerCase()) // Ahora todas las propiedades siempre tendrán un valor
       .some((field) => field.includes(parameter.toLowerCase()))
   );
 
-  // Si no hay coincidencias, asegurar que la lista sea un array vacío
   const finalFilteredCharacters = filteredCharacters.length > 0 ? filteredCharacters : [];
 
   console.log("listFilterCharacters después de filtrar:", finalFilteredCharacters);
 
-  // Actualizar la variable reactiva
   allCharacterVar({
     ...characterState,
     listFilterCharacters: finalFilteredCharacters,
   });
 };
-
 
 
 

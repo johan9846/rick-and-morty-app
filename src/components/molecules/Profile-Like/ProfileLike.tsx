@@ -14,7 +14,7 @@ const ProfileLike = ({
   clickLike
 }: ProfileLike) => {
   return (
-    <header className="h-175 w-full pb-16 flex flex-col">
+    <header className=" w-full flex flex-col" >
       <div className="flex h-75 w-75 relative">
         <div className="flex items-center justify-center  rounded-full overflow-hidden">
           <img className="object-cover w-full h-full" src={img} alt="" />
@@ -23,7 +23,7 @@ const ProfileLike = ({
           <LikeIcon onClick={clickLike} like={like} />
         </div>
       </div>
-      <h1 className="text-2xl h-32 font-greycliff font-bold pt-5">{name}</h1>
+      <h1 className="text-2xl  font-greycliff font-bold pt-[8px]">{name}</h1>
 
     </header>
   );
