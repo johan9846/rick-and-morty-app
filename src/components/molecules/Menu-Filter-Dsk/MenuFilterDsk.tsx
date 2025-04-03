@@ -16,7 +16,8 @@ const MenuFilterDsk = () => {
     </button>
   
     {open && (
-      <div className="absolute left-0 top-full hidden md:block gap-2 flex-col justify-between ring-1 ring-black ring-opacity-5 shadow-lg p-6 rounded-md min-h-[278px] w-[343px] h-auto bg-white z-50">
+     <div className="absolute left-0 top-full hidden md:block flex-col ring-1 ring-black ring-opacity-5 shadow-lg rounded-[6px] h-[278px] w-[343px] h-auto bg-white z-50 p-6">
+
         <OptionFilter />
       </div>
     )}

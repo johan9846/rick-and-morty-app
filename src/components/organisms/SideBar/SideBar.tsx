@@ -1,13 +1,14 @@
-import {  useEffect, useMemo } from "react";
-import { useCharacters } from "../../../hooks/UseAllCharacters/useAllCharacters";
+import { useEffect, useMemo } from "react";
+
 import { allCharacterVar } from "../../../apollo/reactiveVars";
 import { useReactiveVar } from "@apollo/client";
 import SidebarSection from "../../molecules/Sidebar-Section/SidebarSection";
 import FilterApp from "../Filter-APP/FilterApp";
+import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters";
 
 const SideBar = () => {
-  
-  const { loading, error, characters } = useCharacters(1);
+  const { characters, error, loading, fetchCharacters } =
+    useFilteredCharacters();
 
   // Obtener el estado actual de la variable reactiva
   const characterState = useReactiveVar(allCharacterVar);
@@ -17,11 +18,13 @@ const SideBar = () => {
     listFilterCharacters = [],
   } = characterState; // Desestructuración
 
+  
   useEffect(() => {
-    if (
-      characters &&
-      JSON.stringify(characters) !== JSON.stringify(allCharacter)
-    ) {
+    fetchCharacters();
+  }, []); // Escuchar cambios en characters y allCharacter
+
+  useEffect(() => {
+    if (JSON.stringify(characters) !== JSON.stringify(allCharacter)) {
       allCharacterVar({
         allCharacter: characters.map((character) => ({
           ...character,
@@ -50,7 +53,6 @@ const SideBar = () => {
 
   return (
     <div className="bg-white h-screen flex flex-col pt-42 pr-20 pb-42 pl-20 md:bg-gray-50">
-      
       <FilterApp />
 
       {loading ? (
@@ -70,8 +72,6 @@ const SideBar = () => {
               list={listToShow.filter((char) => !char.isFavorite)}
             />
           </div>
-
-       
         </>
       )}
     </div>

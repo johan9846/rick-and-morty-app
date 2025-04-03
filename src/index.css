@@ -2,7 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "Greycliff CF";
+  src: url("/fonts/Fontspring-DEMO-greycliffcf-regular.otf") format("opentype");
+  font-weight: 400;
+}
 
+@font-face {
+  font-family: "Greycliff CF";
+  src: url("/fonts/Fontspring-DEMO-greycliffcf-medium.otf") format("opentype");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Greycliff CF";
+  src: url("/fonts/Fontspring-DEMO-greycliffcf-bold.otf") format("opentype");
+  font-weight: 700;
+}
+
+body {
+  @apply font-greycliff;
+}
 
 ::-webkit-scrollbar {
   width: 6px;

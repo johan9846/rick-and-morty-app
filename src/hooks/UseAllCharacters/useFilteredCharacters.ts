@@ -15,17 +15,26 @@ const GET_FILTERED_CHARACTERS = gql`
   }
 `;
 
-export function useFilteredCharacters() {
-  // Solo ejecuta la consulta cuando `fetchCharacters` es llamado
-  const [fetchCharacters, { loading, error, data }] = useLazyQuery<
-    CharactersData,
-    FilterCharactersVars
-  >(GET_FILTERED_CHARACTERS);
+export function useFilteredCharacters(onCompleted?: (data: CharactersData) => void) {
+  // Definir una función `onCompletedWrapper` para asegurarnos de que no sea undefined
+  const onCompletedWrapper = (data: CharactersData) => {
+    if (onCompleted) {
+      onCompleted(data); // Llamar la función proporcionada si existe
+    }
+  };
+
+  // Ejecuta la consulta y llama `onCompletedWrapper` cuando termine
+  const [fetchCharacters, { loading, error, data }] = useLazyQuery<CharactersData, FilterCharactersVars>(
+    GET_FILTERED_CHARACTERS,
+    {
+      onCompleted: onCompletedWrapper, // Se ejecuta cuando los datos están listos
+    }
+  );
 
   return {
     loading,
     error,
     characters: data?.characters?.results || [],
-    fetchCharacters, // Llamar manualmente para obtener los personajes
+    fetchCharacters,
   };
 }
