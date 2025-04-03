@@ -44,7 +44,8 @@ const SideBar = () => {
     [listFilterCharacters, allCharacter]
   );
 
-  console.log(listFilterCharacters, "holaaa");
+  console.log(listToShow, "listToShow");
+  console.log(listToShow, "listToShow");
 
   if (error) return <p>Error: {error.message}</p>;
 
@@ -60,12 +61,15 @@ const SideBar = () => {
             className="w-full h-auto overflow-auto mt-8"
           >
             <SidebarSection
-              title={`STARRED CHARACTERS (${listToShow.length})`}
-              list={listToShow.filter((char) => char.isFavorite)}
+              title={`STARRED CHARACTERS (${favoritesCharacter.length})`}
+              list={favoritesCharacter}
+
             />
             <SidebarSection
               title={`CHARACTERS (${listToShow.length})`}
-              list={listToShow.filter((char) => !char.isFavorite)}
+              list={listToShow.filter(
+                (char) => !favoritesCharacter.some((fav) => fav.id === char.id)
+              )}
             />
           </div>
 
