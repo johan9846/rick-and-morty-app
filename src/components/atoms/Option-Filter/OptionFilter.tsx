@@ -1,13 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters"; // Importa el hook
-import { allCharacterVar } from "../../../apollo/reactiveVars";
+import { allCharacterVar, filterVar } from "../../../apollo/reactiveVars";
 import { useReactiveVar } from "@apollo/client";
 
 import { CharactersData } from "../../../hooks/interfaces/allCharacter.interface";
 import ROUTES from "../../../constants/routes/Routes";
 
-const OptionFilter = () => {
+const OptionFilter = ({
+  closeModal,
+}: {
+  closeModal: (value: boolean) => void;
+}) => {
   const navigate = useNavigate();
   const [species, setSpecies] = useState<string | null>("All");
   const [gender, setGender] = useState<string | null>("All");
@@ -16,7 +20,10 @@ const OptionFilter = () => {
   const { allCharacter, favoritesCharacter } = characterState; // Desestructuración
 
   const onCharactersFetched = (data: CharactersData) => {
+    closeModal(false);
+
     const characters = data.characters?.results || [];
+
     if (characters.length > 0) {
       // Crear un mapa con los personajes actuales por ID
       const characterMap = new Map(allCharacter.map((char) => [char.id, char]));
@@ -36,6 +43,13 @@ const OptionFilter = () => {
           favoritesCharacter,
           characterSelected: null,
           listFilterCharacters: updatedCharacters,
+        });
+
+        filterVar({
+          selectedFiltersCount: [species, gender].filter(
+            (filter) => filter !== "All"
+          ).length,
+          filteredCharactersCount: updatedCharacters.length,
         });
       }
 

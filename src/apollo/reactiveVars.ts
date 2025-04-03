@@ -32,5 +32,4 @@ export const allCharacterVar = makeVar<CharactersState>({
   characterSelected:  null,   // Arreglo de seleccionados
   listFilterCharacters: [], // 🔥 Lista filtrada
 });
-
-export const filterVar = makeVar(null);
+export const filterVar = makeVar({ selectedFiltersCount: 0, filteredCharactersCount: 0 });
