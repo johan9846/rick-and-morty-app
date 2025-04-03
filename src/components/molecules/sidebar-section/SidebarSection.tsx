@@ -56,10 +56,15 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
                     : "hover:rounded-[8px]"
                 }`}
               onClick={() => {
+                const updatedCharacter = allCharacterVar().allCharacter.find(
+                  (char) => char.id === character.id
+                );
+
                 allCharacterVar({
-                  ...allCharacterVar(), // Mantiene el estado actual completo
-                  characterSelected: character, // Reemplaza el personaje anterior
+                  ...allCharacterVar(),
+                  characterSelected: updatedCharacter || character, // Usa el actualizado si existe
                 });
+
                 navigate(ROUTES.SELECTED_CHARACTER);
               }}
             >
