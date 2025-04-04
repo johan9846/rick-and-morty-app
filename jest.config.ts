@@ -1,4 +1,3 @@
-// jest.config.ts
 import type { Config } from 'jest';
 
 const config: Config = {
@@ -8,6 +7,11 @@ const config: Config = {
   moduleNameMapper: {
     '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
     '^.+\\.(svg|png|jpg|jpeg)$': '<rootDir>/__mocks__/fileMock.ts',
+  },
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.test.json', // <-- importante
+    },
   },
 };
 

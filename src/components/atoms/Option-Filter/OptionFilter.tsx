@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters"; 
+import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters";
 
 import ROUTES from "../../../constants/routes/Routes";
 import { filterVar } from "../../../apollo/reactiveVars";
@@ -42,22 +42,20 @@ const OptionFilter = ({ closeModal }: { closeModal: () => void }) => {
   const handleFilter = async () => {
     try {
       updateLoading(true);
-      console.log(filters, "filters")
+      console.log(filters, "filters");
       await fetchCharacters({ variables: filters });
+
+      const filtrosG = !filters.gender ? 0 : 1;
+      const filtrosS = !filters.species ? 0 : 1;
+      filterVar({
+        ...filterVar(),
+        selectedFiltersCount: filtrosG + filtrosS,
+      });
 
       closeModal();
       navigate(ROUTES.HOME);
     } catch (error) {}
   };
-
-  useEffect(() => {
-    const filtrosG = !filters.gender ? 0 : 1;
-    const filtrosS = !filters.species ? 0 : 1;
-    filterVar({
-      ...filterVar(),
-      selectedFiltersCount: filtrosG + filtrosS,
-    });
-  }, [filters.gender, filters.species]);
 
   return (
     <div>
