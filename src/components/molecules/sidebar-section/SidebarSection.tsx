@@ -63,7 +63,7 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
 
                 allCharacterVar({
                   ...allCharacterVar(),
-                  characterSelected: character, // Usa el actualizado si existe
+                  characterSelected: character,
                 });
 
                 navigate(ROUTES.SELECTED_CHARACTER);

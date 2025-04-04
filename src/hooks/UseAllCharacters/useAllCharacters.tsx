@@ -2,7 +2,7 @@ import { useQuery, gql } from "@apollo/client";
 import {
   CharactersData,
   CharactersVars,
-} from "../interfaces/allCharacter.interface"; // Importar interfaces
+} from "../interfaces/allCharacter.interface"; 
 import { allCharacterVar } from "../../apollo/reactiveVars";
 
 const GET_CHARACTERS = gql`

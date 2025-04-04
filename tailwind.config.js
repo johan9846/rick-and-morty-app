@@ -16,7 +16,7 @@ export default {
         secondary600: "#63D838",
       },
       letterSpacing: {
-        "5p": "5%", // Agrega un espaciado del 5%
+        "5p": "5%", 
       },
       spacing: {
         1: "1px",

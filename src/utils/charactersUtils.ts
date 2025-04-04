@@ -7,7 +7,7 @@ export interface CharacterVar {
   gender: string;
   image: string;
   status: string;
-  comments?: Comment[]; // Asegúrate de que los comentarios sean un array de strings
+  comments?: Comment[];
   occupation?: string;
   isFavorite?: boolean;
 }
@@ -26,35 +26,31 @@ export const toggleFavoriteCharacter = (
   )?.isFavorite;
   const updatedCharacter = { ...character, isFavorite: !isFavorite };
 
-  // Actualizar la lista de todos los personajes
   const updatedAllCharacters = characterState.allCharacter.map((char) =>
     char.id === character.id ? updatedCharacter : char
   );
 
-  // Si hay una búsqueda activa, actualizamos listFilterCharacters
   const updatedListFilterCharacters = characterState.listFilterCharacters.map(
     (char) => (char.id === character.id ? updatedCharacter : char)
   );
-  // Si hay una búsqueda activa, actualizamos listFilterCharacters
+
   const updatedListFilterCharactersApi =
     characterState.listFilterCharactersApi.map((char) =>
       char.id === character.id ? updatedCharacter : char
     );
 
   return {
-    ...characterState, // Mantiene las demás propiedades sin cambios
+    ...characterState,
     allCharacter: updatedAllCharacters,
     listFilterCharactersApi: updatedListFilterCharactersApi,
     characterSelected: updatedCharacter,
-    listFilterCharacters: updatedListFilterCharacters, // 🔥 Aseguramos que se actualice la lista filtrada
+    listFilterCharacters: updatedListFilterCharacters,
   };
 };
 
-// Función para actualizar comentarios
 export const updateComments = (comment: Comment, id: string) => {
   const characterState = allCharacterVar();
 
-  // Combinar allCharacter y favoritesCharacter y buscar el personaje
   const updatedCharacter = [
     ...characterState.allCharacter,
     ...characterState.listFilterCharactersApi,
@@ -62,10 +58,9 @@ export const updateComments = (comment: Comment, id: string) => {
 
   if (!updatedCharacter) return;
 
-  // Crear una nueva versión del personaje con el comentario agregado
   const newCharacter = {
     ...updatedCharacter,
-    comments: [comment, ...(updatedCharacter.comments ?? [])], // Asegurar que comments sea del tipo Comment[]
+    comments: [comment, ...(updatedCharacter.comments ?? [])],
   };
 
   allCharacterVar({
@@ -86,7 +81,6 @@ export const updateComments = (comment: Comment, id: string) => {
 export const deleteComment = (commentId: string, characterId: string) => {
   const characterState = allCharacterVar();
 
-  // Buscar el personaje en allCharacter y favoritesCharacter
   const updatedCharacter = [
     ...characterState.allCharacter,
     ...characterState.listFilterCharactersApi,
@@ -94,7 +88,6 @@ export const deleteComment = (commentId: string, characterId: string) => {
 
   if (!updatedCharacter) return;
 
-  // Crear una nueva versión del personaje con el comentario eliminado
   const newCharacter = {
     ...updatedCharacter,
     comments:
@@ -103,7 +96,6 @@ export const deleteComment = (commentId: string, characterId: string) => {
       ) || [],
   };
 
-  // Actualizar la variable reactiva con el nuevo personaje
   allCharacterVar({
     ...characterState,
     allCharacter: characterState.allCharacter.map((char) =>
@@ -124,7 +116,7 @@ export const filterResults = (parameter: string) => {
 
   if (!parameter.trim()) {
     console.log("search");
-    
+
     allCharacterVar({
       ...characterState,
       listFilterCharacters: [],
@@ -138,20 +130,18 @@ export const filterResults = (parameter: string) => {
   if (listFilterCharactersApi.length > 0) {
     listToShow = listFilterCharactersApi;
   }
- 
-  
+
   const listFilterCharacters = listToShow.filter((character) => {
     const name = character?.name ?? "";
     const status = character?.status ?? "";
     const species = character?.species ?? "";
-  
+
     return (
       name.toLocaleLowerCase().includes(parameter.toLocaleLowerCase()) ||
       status.toLocaleLowerCase().includes(parameter.toLocaleLowerCase()) ||
       species.toLocaleLowerCase().includes(parameter.toLocaleLowerCase())
     );
   });
-  
 
   allCharacterVar({
     ...characterState,
@@ -161,9 +151,8 @@ export const filterResults = (parameter: string) => {
 
 export const orderList = (order: "asc" | "desc") => {
   const characterState = allCharacterVar();
-console.log("ordr list");
+  console.log("ordr list");
 
-  // Asegurar que TypeScript entienda el tipo de los parámetros
   const sortFunction = (a: CharacterVar, b: CharacterVar) =>
     order === "asc"
       ? a.name.localeCompare(b.name)

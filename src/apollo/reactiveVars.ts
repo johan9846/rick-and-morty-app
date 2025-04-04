@@ -1,6 +1,6 @@
 import { makeVar } from "@apollo/client";
 
-// Definir el tipo de los datos que manejarás en la variable reactiva
+
 interface Character {
   id: string;
   name: string;
@@ -18,20 +18,20 @@ export interface Comment {
   comment: string;
 }
 
-// Definir el tipo de la variable reactiva
+
 export interface ICharactersStateProps {
   allCharacter: Character[];
   listFilterCharactersApi: Character[];
-  characterSelected: Character | null; // Ahora puede ser un objeto Character
-  listFilterCharacters: Character[] | []; // 🔥 Lista filtrada (corregido)
+  characterSelected: Character | null;
+  listFilterCharacters: Character[] | []; 
   loading?: boolean;
 }
-// Inicializar la variable reactiva con el tipo correcto
+
 export const allCharacterVar = makeVar<ICharactersStateProps>({
-  allCharacter: [], // Arreglo de personajes
-  listFilterCharactersApi: [], // Arreglo de favoritos
-  characterSelected: null, // Arreglo de seleccionados
-  listFilterCharacters: [], // 🔥 Lista filtrada
+  allCharacter: [], 
+  listFilterCharactersApi: [], 
+  characterSelected: null, 
+  listFilterCharacters: [], 
   loading: false,
 });
 export const filterVar = makeVar({

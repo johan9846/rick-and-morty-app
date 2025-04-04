@@ -2,7 +2,7 @@ import { useLazyQuery, gql, useReactiveVar } from "@apollo/client";
 import {
   CharactersData,
   FilterCharactersVars,
-} from "../interfaces/allCharacter.interface"; // Importar interfaces
+} from "../interfaces/allCharacter.interface"; 
 import { allCharacterVar, filterVar } from "../../apollo/reactiveVars";
 
 const GET_FILTERED_CHARACTERS = gql`
@@ -24,7 +24,7 @@ export function useFilteredCharacters() {
 
   const filterVarState = useReactiveVar(filterVar);
 
-  // Ejecutar la consulta y llamar `onCompletedWrapper` cuando termine
+ 
   const [fetchCharacters, { error }] = useLazyQuery<
     CharactersData,
     FilterCharactersVars
@@ -59,7 +59,7 @@ export function useFilteredCharacters() {
         filteredCharactersCount:
           filterVarState.selectedFiltersCount > 0 ? resultsToShow.length : 0,
       });
-    }, // Se ejecuta cuando los datos están listos
+    }, 
   });
   const updateLoading = (loading: boolean) => {
     allCharacterVar({

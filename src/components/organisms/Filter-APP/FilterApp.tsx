@@ -9,7 +9,7 @@ import { filterVar } from "../../../apollo/reactiveVars";
 const Filter = () => {
   const filterState = useReactiveVar(filterVar);
   const handleSearch = (e: any) => {
-    filterResults(e.target.value); // 🔥 Aplica el filtro en tiempo real
+    filterResults(e.target.value);
   };
 
 

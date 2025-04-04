@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters"; // Importa el hook
+import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters"; 
 
 import ROUTES from "../../../constants/routes/Routes";
 import { filterVar } from "../../../apollo/reactiveVars";

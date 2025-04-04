@@ -12,7 +12,7 @@ import ROUTES from "../../../constants/routes/Routes";
 const CharacterSelected = () => {
   const navigate = useNavigate();
   const characterState = useReactiveVar(allCharacterVar);
-  const characterSelected=characterState.characterSelected
+  const characterSelected = characterState.characterSelected;
   const [inputComment, setInputComment] = useState("");
 
   if (!characterSelected) return null;
@@ -22,12 +22,12 @@ const CharacterSelected = () => {
     if (!inputComment.trim() || !characterSelected) return;
 
     const newComment = {
-      id: nanoid(8), // Genera un ID único para el comentario
+      id: nanoid(8),
       comment: inputComment,
     };
 
     updateComments(newComment, characterSelected.id);
-    setInputComment(""); // Limpiar el input después de agregar el comentario
+    setInputComment("");
   };
 
   return (

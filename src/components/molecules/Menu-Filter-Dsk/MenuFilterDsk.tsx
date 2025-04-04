@@ -7,7 +7,7 @@ const MenuFilterDsk = () => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
-    setOpen(false); // Actualiza el estado en el padre
+    setOpen(false); 
   };
 
   return (

@@ -15,12 +15,8 @@ const SideBar = ({ loading }: { loading?: boolean }) => {
     allCharacter,
     listFilterCharactersApi,
     listFilterCharacters = [],
-  } = characterState; // Desestructuración
-  
+  } = characterState;
 
-
-  
-  // Usar useMemo para decidir qué lista mostrar
   const listToShow = useMemo(() => {
     if (
       listFilterCharacters.length === 0 &&
