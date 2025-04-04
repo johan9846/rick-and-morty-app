@@ -1,58 +1,56 @@
 <<<<<<< HEAD
 # rick-and-morty-app
-=======
-# React + TypeScript + Vite
+## URL APP:
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+https://johan9846.github.io/rick-and-morty-app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The Rick and Morty app is a web application developed with React, Vite, and TypeScript. It uses the Rick and Morty API to display information about characters, episodes, and locations from the Rick and Morty universe.
 
-## Expanding the ESLint configuration
+## Features
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- **Technologies used**:
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+  - React
+  - node > 18
+  - Vite
+  - TypeScript
+  - Apollo Client and GraphQL to fetch data from the [Rick and Morty API](https://rickandmortyapi.com/)
+  - TailwindCSS for styling
+  - React Router DOM for routing management
+  - Reactive variables
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Design**:
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+An atomic design approach is adopted. TailwindCSS is used as a key tool to develop a visually compelling, fluid, and responsive design across multiple screens in an agile manner.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
->>>>>>> de54a7b (Init commit)
+  ## Application Screenshots
+
+Here are some views of the application:
+
+## Desktop Design
+
+![App Image](/src/assets/img/preview_desktop_app.png)
+
+## Responsive Design
+
+![App Image](/src/assets/img/preview_responsive_app_filter.png)
+![App Image](/src/assets/img/preview_responsive_app_menu.png)
+![App Image](/src/assets/img/preview_responsive_app_vie_character.png)
+
+## Setup to Run the Project
+
+1. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+2. **Run the application locally:**:
+
+   ```bash
+   npm run dev
+   ```
+
+
+
