@@ -32,7 +32,7 @@ export function useCharacters() {
           occupation: "nada",
           isFavorite: false,
         }));
-        console.log(result, "mi amor persdon");
+      
         allCharacterVar({
           allCharacter: result,
           listFilterCharactersApi: [],

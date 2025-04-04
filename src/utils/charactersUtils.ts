@@ -115,7 +115,7 @@ export const filterResults = (parameter: string) => {
   const characterState = allCharacterVar();
 
   if (!parameter.trim()) {
-    console.log("search");
+ 
 
     allCharacterVar({
       ...characterState,
@@ -151,7 +151,7 @@ export const filterResults = (parameter: string) => {
 
 export const orderList = (order: "asc" | "desc") => {
   const characterState = allCharacterVar();
-  console.log("ordr list");
+  
 
   const sortFunction = (a: CharacterVar, b: CharacterVar) =>
     order === "asc"

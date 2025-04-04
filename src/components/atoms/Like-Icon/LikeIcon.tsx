@@ -11,7 +11,7 @@ const LikeIcon = ({ like, onClick }: LikeIconProps) => {
   return (
     <div
       onClick={(e: MouseEvent<HTMLDivElement>) => {
-        console.log("loke icon");
+       
         e.stopPropagation();
         onClick()
       }}

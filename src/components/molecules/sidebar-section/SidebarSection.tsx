@@ -59,8 +59,6 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
                     : "hover:rounded-[8px]"
                 }`}
               onClick={() => {
-                console.log("row");
-
                 allCharacterVar({
                   ...allCharacterVar(),
                   characterSelected: character,
