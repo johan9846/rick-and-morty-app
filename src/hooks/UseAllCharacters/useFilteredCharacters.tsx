@@ -30,39 +30,38 @@ export function useFilteredCharacters() {
   >(GET_FILTERED_CHARACTERS, {
     onCompleted: (data) => {
       const resultData = data.characters.results;
-       
+
       console.log(resultData, "resultData");
-      const resultsToShow = resultData.map((newChar) => {
-        const existingChar = characterState.allCharacter.find(
-          (oldChar) => oldChar.id === newChar.id
-        );
-    
-        return {
-          ...newChar,
-          comments: newChar.comments ?? [],
-          occupation: newChar.occupation ?? "nada",
-          isFavorite: existingChar?.isFavorite ?? newChar.isFavorite ?? false,
-        };
-      }).filter((ch) => {
-        const idNum = Number(ch.id);
-        return idNum >= 1 && idNum <= 20;
-      });
-  
-      
-    
+      const resultsToShow = resultData
+        .map((newChar) => {
+          const existingChar = characterState.allCharacter.find(
+            (oldChar) => oldChar.id === newChar.id
+          );
+
+          return {
+            ...newChar,
+            comments: existingChar?.comments ?? newChar.comments ?? [],
+            occupation: newChar.occupation ?? "nada",
+            isFavorite: existingChar?.isFavorite ?? newChar.isFavorite ?? false,
+          };
+        })
+        .filter((ch) => {
+          const idNum = Number(ch.id);
+          return idNum >= 1 && idNum <= 20;
+        });
+
       allCharacterVar({
         ...characterState,
         listFilterCharactersApi: resultsToShow,
         loading: false,
       });
-    
+
       filterVar({
         ...filterVarState,
         filteredCharactersCount:
           filterVarState.selectedFiltersCount > 0 ? resultsToShow.length : 0,
       });
-    }
-    
+    },
   });
   const updateLoading = (loading: boolean) => {
     allCharacterVar({
