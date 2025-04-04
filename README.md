@@ -46,11 +46,17 @@ Here are some views of the application:
    npm install
    ```
 
-2. **Run the application locally:**:
-
+2. **Run the application locally:**
    ```bash
    npm run dev
    ```
+   
+## Run the test
+
+   ```bash
+   npm test
+   ```
+
 
 
 
