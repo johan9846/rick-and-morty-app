@@ -26,6 +26,7 @@ export function useCharacters() {
     {
       variables: { page: 1 },
       onCompleted: (data) => {
+        console.log("etnrre")
         const result = data.characters.results.map((ch) => ({
           ...ch,
           comments: [],
