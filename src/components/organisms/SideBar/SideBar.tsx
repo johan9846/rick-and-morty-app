@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import SidebarSection from "../../molecules/Sidebar-Section/SidebarSection";
+import SidebarSection from "../../molecules/sidebar-section/SidebarSection";
 import FilterApp from "../Filter-APP/FilterApp";
 import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters";
 
