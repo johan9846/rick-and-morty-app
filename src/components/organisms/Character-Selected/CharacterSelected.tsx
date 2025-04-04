@@ -11,7 +11,8 @@ import ROUTES from "../../../constants/routes/Routes";
 
 const CharacterSelected = () => {
   const navigate = useNavigate();
-  const { characterSelected } = useReactiveVar(allCharacterVar);
+  const characterState = useReactiveVar(allCharacterVar);
+  const characterSelected=characterState.characterSelected
   const [inputComment, setInputComment] = useState("");
 
   if (!characterSelected) return null;
@@ -31,7 +32,6 @@ const CharacterSelected = () => {
 
   return (
     <div className="flex flex-col md:w-full h-full p-24 pt-0 md:pt-40 md:pr-100 md:pb-40 md:pl-100  overflow-auto">
-      
       <div className="h-[70px] md:hidden flex items-center ">
         <img
           className=" h-24 w-24 cursor-pointer"
@@ -45,9 +45,13 @@ const CharacterSelected = () => {
         img={characterSelected?.image || ""}
         name={characterSelected?.name || "Desconocido"}
         like={!!characterSelected?.isFavorite}
-        clickLike={() =>
-          characterSelected && toggleFavoriteCharacter(characterSelected)
-        }
+        clickLike={() => {
+          const toggleInformation = toggleFavoriteCharacter(
+            characterSelected,
+            characterState
+          );
+          allCharacterVar({ ...toggleInformation });
+        }}
       />
 
       <div className="flex flex-col w-full h-[74px] justify-center mt-16">

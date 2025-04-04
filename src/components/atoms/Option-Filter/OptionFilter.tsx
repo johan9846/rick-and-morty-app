@@ -1,106 +1,81 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters"; // Importa el hook
-import { allCharacterVar, filterVar } from "../../../apollo/reactiveVars";
-import { useReactiveVar } from "@apollo/client";
 
-import { CharactersData } from "../../../hooks/interfaces/allCharacter.interface";
 import ROUTES from "../../../constants/routes/Routes";
+import { filterVar } from "../../../apollo/reactiveVars";
 
-const OptionFilter = ({
-  closeModal,
-}: {
-  closeModal: (value: boolean) => void;
-}) => {
+const specieButton = [
+  { name: "All", value: null },
+  { name: "Human", value: "Human" },
+  { name: "Alien", value: "Alien" },
+];
+const genderButton = [
+  { name: "All", value: null },
+  { name: "Male", value: "Male" },
+  { name: "Female", value: "Female" },
+];
+
+interface IFilterProps {
+  gender: string | null;
+  specie: string | null;
+}
+
+const OptionFilter = ({ closeModal }: { closeModal: () => void }) => {
   const navigate = useNavigate();
-  const [species, setSpecies] = useState<string | null>("All");
-  const [gender, setGender] = useState<string | null>("All");
 
-  const characterState = useReactiveVar(allCharacterVar);
-  const { allCharacter, favoritesCharacter } = characterState; // Desestructuración
+  const [filters, setFilter] = useState<IFilterProps>({
+    gender: null,
+    specie: null,
+  });
 
-  const onCharactersFetched = (data: CharactersData) => {
-    closeModal(false);
+  const { fetchCharacters, updateLoading } = useFilteredCharacters();
 
-    const characters = data.characters?.results || [];
+  const handleGenderClick = (gender: string | null) => {
+    setFilter({ ...filters, gender });
+  };
 
-    if (characters.length > 0) {
-      // Crear un mapa con los personajes actuales por ID
-      const characterMap = new Map(allCharacter.map((char) => [char.id, char]));
+  const handleSpeciesClick = (specie: string | null) => {
+    setFilter({ ...filters, specie });
+  };
 
-      // Generar la nueva lista de personajes
-      const updatedCharacters = characters.map(
-        (character) =>
-          characterMap.has(character.id)
-            ? characterMap.get(character.id)! // Mantiene los datos si ya existe
-            : { ...character, isFavorite: false, occupation: "nada" } // Agrega los nuevos con valores por defecto
-      );
+  const handleFilter = async () => {
+    try {
+      updateLoading(true);
+      await fetchCharacters({ variables: filters });
 
-      // Solo actualiza si hay cambios
-      if (JSON.stringify(updatedCharacters) !== JSON.stringify(allCharacter)) {
-        allCharacterVar({
-          allCharacter: updatedCharacters,
-          favoritesCharacter,
-          characterSelected: null,
-          listFilterCharacters: updatedCharacters,
-        });
-
-        filterVar({
-          selectedFiltersCount: [species, gender].filter(
-            (filter) => filter !== "All"
-          ).length,
-          filteredCharactersCount: updatedCharacters.length,
-        });
-      }
-
+      closeModal();
       navigate(ROUTES.HOME);
-    }
+    } catch (error) {}
   };
 
-  const { fetchCharacters } = useFilteredCharacters(onCharactersFetched);
+  useEffect(() => {
+    const filtrosG = !filters.gender ? 0 : 1;
+    const filtrosS = !filters.specie ? 0 : 1;
+    filterVar({
+      ...filterVar(),
+      selectedFiltersCount: filtrosG + filtrosS,
+    });
+  }, [filters.gender, filters.specie]);
 
-  const handleGenderClick = (option: string) => {
-    if (option === "All") {
-      setGender("All");
-    } else {
-      setGender(option);
-    }
-  };
-
-  const handleSpeciesClick = (option: string) => {
-    if (option === "All") {
-      setSpecies("All");
-    } else {
-      setSpecies(option);
-    }
-  };
-
-  const handleFilter = () => {
-    const filters = {
-      species: species === "All" ? null : species,
-      gender: gender === "All" ? null : gender,
-    };
-
-    fetchCharacters({ variables: filters });
-  };
   return (
     <div>
       <div className="text-[14px] font-medium font-greycliff mb-2 text-[#6B7280]">
         Gender
       </div>
       <div className="flex gap-2 mb-6 justify-between ">
-        {["All", "Male", "Female"].map((option) => (
+        {genderButton.map((option) => (
           <button
-            key={option}
+            key={option.name}
             className={`w-[102px] h-[44px] font-greycliff rounded-[8px] text-[14px] font-semibold
       ${
-        gender === option
+        filters.gender === option.value
           ? "bg-[#EEE3FF] text-[#8054C7]"
           : "border border-[1px] border-[#E5E7EB] text-[#111827]"
       }`}
-            onClick={() => handleGenderClick(option)}
+            onClick={() => handleGenderClick(option.value)}
           >
-            {option}
+            {option.name}
           </button>
         ))}
       </div>
@@ -110,18 +85,18 @@ const OptionFilter = ({
       </div>
 
       <div className="flex gap-2 mb-6 justify-between">
-        {["All", "Human", "Alien"].map((option) => (
+        {specieButton.map((option) => (
           <button
-            key={option}
+            key={option.name}
             className={`w-[102px] h-[44px] font-greycliff rounded-[8px] text-[14px] font-semibold
       ${
-        species === option
+        filters.specie === option.value
           ? "bg-[#EEE3FF] text-[#8054C7]"
           : "border border-[1px] border-[#E5E7EB] text-[#111827]"
       }`}
-            onClick={() => handleSpeciesClick(option)}
+            onClick={() => handleSpeciesClick(option.value)}
           >
-            {option}
+            {option.name}
           </button>
         ))}
       </div>

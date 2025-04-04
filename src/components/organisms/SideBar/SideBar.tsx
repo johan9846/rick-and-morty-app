@@ -1,74 +1,52 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 
-import { allCharacterVar } from "../../../apollo/reactiveVars";
-import { useReactiveVar } from "@apollo/client";
 import SidebarSection from "../../molecules/Sidebar-Section/SidebarSection";
 import FilterApp from "../Filter-APP/FilterApp";
 import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilteredCharacters";
 
-const SideBar = () => {
-  const { characters, error, loading, fetchCharacters } =
-    useFilteredCharacters();
+const SideBar = ({ loading }: { loading?: boolean }) => {
+  const {
+    characterState,
+    error,
+    loading: filterLoading,
+  } = useFilteredCharacters();
 
-  // Obtener el estado actual de la variable reactiva
-  const characterState = useReactiveVar(allCharacterVar);
   const {
     allCharacter,
-    favoritesCharacter,
+    listFilterCharactersApi,
     listFilterCharacters = [],
   } = characterState; // Desestructuración
+  
 
-  useEffect(() => {
-    fetchCharacters();
-  }, []); // Escuchar cambios en characters y allCharacter
 
-  useEffect(() => {
-    if (JSON.stringify(characters) !== JSON.stringify(allCharacter)) {
-      allCharacterVar({
-        allCharacter: characters.map((character) => ({
-          ...character,
-          isFavorite: false,
-          occupation: "nada",
-        })), // Guardamos los personajes con nuevas propiedades
-        favoritesCharacter, // Mantener favoritos sin cambios
-        characterSelected: null,
-        listFilterCharacters: [],
-      });
-    }
-  }, [characters]); // Solo ejecuta el efecto si `characters` cambia
-
+  
   // Usar useMemo para decidir qué lista mostrar
-  const listToShow = useMemo(
-    () =>
-      (listFilterCharacters ?? []).length > 0
-        ? listFilterCharacters
-        : allCharacter,
-    [listFilterCharacters, allCharacter]
-  );
-
-  console.log(listFilterCharacters, "holaaa");
+  const listToShow = useMemo(() => {
+    if (
+      listFilterCharacters.length === 0 &&
+      listFilterCharactersApi.length === 0
+    ) {
+      return allCharacter;
+    }
+    if (listFilterCharacters.length === 0) {
+      return listFilterCharactersApi;
+    }
+    return listFilterCharacters;
+  }, [listFilterCharacters, allCharacter, listFilterCharactersApi]);
 
   if (error) return <p>Error: {error.message}</p>;
 
   return (
-    <div
-      className="bg-white h-screen flex flex-col pt-42 pr-16 pb-[112px] pl-16 md:bg-gray-50"
-     
-    >
-      <h1 className="text-2xl min-h-40 mb-17 font-bold" >
-        Rick and Morty list
-      </h1>
+    <div className="bg-white h-screen flex flex-col pt-42 pr-16 pb-[112px] pl-16 md:bg-gray-50">
+      <h1 className="text-2xl min-h-40 mb-17 font-bold">Rick and Morty list</h1>
 
       <FilterApp />
 
-      {loading ? (
+      {loading || filterLoading ? (
         <p>Loading...</p>
       ) : (
         <>
-          <div
-            className="w-full h-auto overflow-auto"
-         
-          >
+          <div className="w-full h-auto overflow-auto">
             <SidebarSection
               title={`STARRED CHARACTERS (${
                 listToShow.filter((char) => char.isFavorite).length

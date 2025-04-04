@@ -6,8 +6,8 @@ import OptionFilter from "../../atoms/Option-Filter/OptionFilter";
 const MenuFilterDsk = () => {
   const [open, setOpen] = useState(false);
 
-  const handleClose = (value: boolean) => {
-    setOpen(value); // Actualiza el estado en el padre
+  const handleClose = () => {
+    setOpen(false); // Actualiza el estado en el padre
   };
 
   return (

@@ -16,7 +16,7 @@ const MenuFilterMob = () => {
           onClick={() => navigate(ROUTES.HOME)}
         />
       </div>
-      <OptionFilter />
+      <OptionFilter closeModal={()=>navigate(ROUTES.HOME)} />
     </section>
   );
 };

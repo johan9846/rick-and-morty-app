@@ -1,4 +1,4 @@
-import { allCharacterVar } from "../apollo/reactiveVars";
+import { allCharacterVar, ICharactersStateProps } from "../apollo/reactiveVars";
 
 export interface CharacterVar {
   id: string;
@@ -17,12 +17,13 @@ export interface Comment {
   comment: string;
 }
 
-export const toggleFavoriteCharacter = (character: CharacterVar) => {
-  const characterState = allCharacterVar();
-
-  const isFavorite = characterState.favoritesCharacter.some(
+export const toggleFavoriteCharacter = (
+  character: CharacterVar,
+  characterState: ICharactersStateProps
+) => {
+  const isFavorite = characterState.allCharacter.find(
     (fav) => fav.id === character.id
-  );
+  )?.isFavorite;
   const updatedCharacter = { ...character, isFavorite: !isFavorite };
 
   // Actualizar la lista de todos los personajes
@@ -34,21 +35,19 @@ export const toggleFavoriteCharacter = (character: CharacterVar) => {
   const updatedListFilterCharacters = characterState.listFilterCharacters.map(
     (char) => (char.id === character.id ? updatedCharacter : char)
   );
+  // Si hay una búsqueda activa, actualizamos listFilterCharacters
+  const updatedListFilterCharactersApi =
+    characterState.listFilterCharactersApi.map((char) =>
+      char.id === character.id ? updatedCharacter : char
+    );
 
-  allCharacterVar({
+  return {
     ...characterState, // Mantiene las demás propiedades sin cambios
     allCharacter: updatedAllCharacters,
-    favoritesCharacter: isFavorite
-      ? characterState.favoritesCharacter.filter(
-          (fav) => fav.id !== character.id
-        )
-      : [...characterState.favoritesCharacter, updatedCharacter],
-    characterSelected:
-      characterState.characterSelected?.id === character.id
-        ? updatedCharacter
-        : characterState.characterSelected,
+    listFilterCharactersApi: updatedListFilterCharactersApi,
+    characterSelected: updatedCharacter,
     listFilterCharacters: updatedListFilterCharacters, // 🔥 Aseguramos que se actualice la lista filtrada
-  });
+  };
 };
 
 // Función para actualizar comentarios
@@ -56,8 +55,10 @@ export const updateComments = (comment: Comment, id: string) => {
   const characterState = allCharacterVar();
 
   // Combinar allCharacter y favoritesCharacter y buscar el personaje
-  const updatedCharacter = [...characterState.allCharacter, ...characterState.favoritesCharacter]
-    .find((character) => character.id === id);
+  const updatedCharacter = [
+    ...characterState.allCharacter,
+    ...characterState.listFilterCharactersApi,
+  ].find((character) => character.id === id);
 
   if (!updatedCharacter) return;
 
@@ -72,8 +73,8 @@ export const updateComments = (comment: Comment, id: string) => {
     allCharacter: characterState.allCharacter.map((char) =>
       char.id === id ? newCharacter : char
     ),
-    favoritesCharacter: characterState.favoritesCharacter.map((char) =>
-      char.id === id ? newCharacter : char
+    listFilterCharactersApi: characterState.listFilterCharactersApi.map(
+      (char) => (char.id === id ? newCharacter : char)
     ),
     characterSelected:
       characterState.characterSelected?.id === id
@@ -86,8 +87,10 @@ export const deleteComment = (commentId: string, characterId: string) => {
   const characterState = allCharacterVar();
 
   // Buscar el personaje en allCharacter y favoritesCharacter
-  const updatedCharacter = [...characterState.allCharacter, ...characterState.favoritesCharacter]
-    .find((character) => character.id === characterId);
+  const updatedCharacter = [
+    ...characterState.allCharacter,
+    ...characterState.listFilterCharactersApi,
+  ].find((character) => character.id === characterId);
 
   if (!updatedCharacter) return;
 
@@ -106,8 +109,8 @@ export const deleteComment = (commentId: string, characterId: string) => {
     allCharacter: characterState.allCharacter.map((char) =>
       char.id === characterId ? newCharacter : char
     ),
-    favoritesCharacter: characterState.favoritesCharacter.map((char) =>
-      char.id === characterId ? newCharacter : char
+    listFilterCharactersApi: characterState.listFilterCharactersApi.map(
+      (char) => (char.id === characterId ? newCharacter : char)
     ),
     characterSelected:
       characterState.characterSelected?.id === characterId
@@ -116,61 +119,64 @@ export const deleteComment = (commentId: string, characterId: string) => {
   });
 };
 
-
 export const filterResults = (parameter: string) => {
   const characterState = allCharacterVar();
 
   if (!parameter.trim()) {
+    console.log("search");
+    
     allCharacterVar({
       ...characterState,
       listFilterCharacters: [],
     });
-    console.log("listFilterCharacters vacío porque no hay parámetro de búsqueda:", []);
+
     return;
   }
+  const { allCharacter, listFilterCharactersApi } = characterState;
 
-  const combinedCharacters = [
-    ...characterState.allCharacter,
-    ...characterState.favoritesCharacter.filter(
-      (fav) => !characterState.allCharacter.some((char) => char.id === fav.id)
-    ),
-  ];
-
-  const filteredCharacters = combinedCharacters.filter((character) =>
-    [character.name ?? "", character.status ?? "", character.species ?? ""]
-      .map((value) => value.toLowerCase()) // Ahora todas las propiedades siempre tendrán un valor
-      .some((field) => field.includes(parameter.toLowerCase()))
-  );
-
-  const finalFilteredCharacters = filteredCharacters.length > 0 ? filteredCharacters : [];
-
-  console.log("listFilterCharacters después de filtrar:", finalFilteredCharacters);
+  let listToShow = allCharacter;
+  if (listFilterCharactersApi.length > 0) {
+    listToShow = listFilterCharactersApi;
+  }
+ 
+  
+  const listFilterCharacters = listToShow.filter((character) => {
+    const name = character?.name ?? "";
+    const status = character?.status ?? "";
+    const species = character?.species ?? "";
+  
+    return (
+      name.toLocaleLowerCase().includes(parameter.toLocaleLowerCase()) ||
+      status.toLocaleLowerCase().includes(parameter.toLocaleLowerCase()) ||
+      species.toLocaleLowerCase().includes(parameter.toLocaleLowerCase())
+    );
+  });
+  
 
   allCharacterVar({
     ...characterState,
-    listFilterCharacters: finalFilteredCharacters,
+    listFilterCharacters,
   });
 };
 
-
-
-
-
 export const orderList = (order: "asc" | "desc") => {
   const characterState = allCharacterVar();
+console.log("ordr list");
 
   // Asegurar que TypeScript entienda el tipo de los parámetros
   const sortFunction = (a: CharacterVar, b: CharacterVar) =>
-    order === "asc" ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
+    order === "asc"
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name);
 
   allCharacterVar({
     ...characterState,
     allCharacter: [...characterState.allCharacter].sort(sortFunction),
-    favoritesCharacter: [...characterState.favoritesCharacter].sort(sortFunction),
-    listFilterCharacters: [...characterState.listFilterCharacters].sort(sortFunction),
+    listFilterCharactersApi: [...characterState.listFilterCharactersApi].sort(
+      sortFunction
+    ),
+    listFilterCharacters: [...characterState.listFilterCharacters].sort(
+      sortFunction
+    ),
   });
 };
-
-
-
-

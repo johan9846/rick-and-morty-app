@@ -1,3 +1,4 @@
+import { MouseEvent } from "react";
 import heartIcon from "../../../assets/icons/heart_icon.svg";
 import heartLikeIcon from "../../../assets/icons/heart_like_icon.svg";
 
@@ -9,7 +10,11 @@ interface LikeIconProps {
 const LikeIcon = ({ like, onClick }: LikeIconProps) => {
   return (
     <div
-      onClick={onClick}
+      onClick={(e: MouseEvent<HTMLDivElement>) => {
+        console.log("loke icon");
+        e.stopPropagation();
+        onClick()
+      }}
       className="w-[32px] h-[32px] bg-white flex items-center justify-center rounded-3xl z-20"
     >
       {like ? (
