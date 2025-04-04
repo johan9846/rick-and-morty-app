@@ -5,7 +5,7 @@ import MainTemplate from "../../src/components/templates/Main-Template/MainTempl
 const RouterApp = () => {
 
   return (
-    <Router basename="/Rick-and-Morty">
+    <Router basename="/rick-and-morty-app">
       <Destktop />
       <MainTemplate />
     </Router>
