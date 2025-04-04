@@ -18,7 +18,7 @@ const genderButton = [
 
 interface IFilterProps {
   gender: string | null;
-  specie: string | null;
+  species: string | null;
 }
 
 const OptionFilter = ({ closeModal }: { closeModal: () => void }) => {
@@ -26,7 +26,7 @@ const OptionFilter = ({ closeModal }: { closeModal: () => void }) => {
 
   const [filters, setFilter] = useState<IFilterProps>({
     gender: null,
-    specie: null,
+    species: null,
   });
 
   const { fetchCharacters, updateLoading } = useFilteredCharacters();
@@ -35,13 +35,14 @@ const OptionFilter = ({ closeModal }: { closeModal: () => void }) => {
     setFilter({ ...filters, gender });
   };
 
-  const handleSpeciesClick = (specie: string | null) => {
-    setFilter({ ...filters, specie });
+  const handleSpeciesClick = (species: string | null) => {
+    setFilter({ ...filters, species });
   };
 
   const handleFilter = async () => {
     try {
       updateLoading(true);
+      console.log(filters, "filters")
       await fetchCharacters({ variables: filters });
 
       closeModal();
@@ -51,12 +52,12 @@ const OptionFilter = ({ closeModal }: { closeModal: () => void }) => {
 
   useEffect(() => {
     const filtrosG = !filters.gender ? 0 : 1;
-    const filtrosS = !filters.specie ? 0 : 1;
+    const filtrosS = !filters.species ? 0 : 1;
     filterVar({
       ...filterVar(),
       selectedFiltersCount: filtrosG + filtrosS,
     });
-  }, [filters.gender, filters.specie]);
+  }, [filters.gender, filters.species]);
 
   return (
     <div>
@@ -90,7 +91,7 @@ const OptionFilter = ({ closeModal }: { closeModal: () => void }) => {
             key={option.name}
             className={`w-[102px] h-[44px] font-greycliff rounded-[8px] text-[14px] font-semibold
       ${
-        filters.specie === option.value
+        filters.species === option.value
           ? "bg-[#EEE3FF] text-[#8054C7]"
           : "border border-[1px] border-[#E5E7EB] text-[#111827]"
       }`}
