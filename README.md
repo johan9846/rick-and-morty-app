@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # rick-and-morty-app
 ## URL APP:
 
