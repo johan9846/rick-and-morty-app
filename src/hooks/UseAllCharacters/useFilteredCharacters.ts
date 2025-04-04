@@ -15,15 +15,15 @@ const GET_FILTERED_CHARACTERS = gql`
   }
 `;
 
-export function useFilteredCharacters(onCompleted?: (data: CharactersData) => void) {
-  // Definir una función `onCompletedWrapper` para asegurarnos de que no sea undefined
+export function useFilteredCharacters(onQueryComplete?: (data: CharactersData) => void) {
+  // Definir una función `onCompletedWrapper` para asegurar que no sea undefined
   const onCompletedWrapper = (data: CharactersData) => {
-    if (onCompleted) {
-      onCompleted(data); // Llamar la función proporcionada si existe
+    if (onQueryComplete) {
+      onQueryComplete(data); // Llamar a la función proporcionada si existe
     }
   };
 
-  // Ejecuta la consulta y llama `onCompletedWrapper` cuando termine
+  // Ejecutar la consulta y llamar `onCompletedWrapper` cuando termine
   const [fetchCharacters, { loading, error, data }] = useLazyQuery<CharactersData, FilterCharactersVars>(
     GET_FILTERED_CHARACTERS,
     {
