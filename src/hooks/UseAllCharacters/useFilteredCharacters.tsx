@@ -43,8 +43,11 @@ export function useFilteredCharacters() {
           occupation: newChar.occupation ?? "nada",
           isFavorite: existingChar?.isFavorite ?? newChar.isFavorite ?? false,
         };
+      }).filter((ch) => {
+        const idNum = Number(ch.id);
+        return idNum >= 1 && idNum <= 20;
       });
-      console.log(resultsToShow, "resultsToShow");
+  
       
     
       allCharacterVar({
