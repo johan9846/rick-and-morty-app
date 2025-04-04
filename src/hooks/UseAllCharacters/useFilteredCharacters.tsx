@@ -58,8 +58,7 @@ export function useFilteredCharacters() {
 
       filterVar({
         ...filterVarState,
-        filteredCharactersCount:
-          filterVarState.selectedFiltersCount > 0 ? resultsToShow.length : 0,
+        filteredCharactersCount: resultsToShow.length,
       });
     },
   });
