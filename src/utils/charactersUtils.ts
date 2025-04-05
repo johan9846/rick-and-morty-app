@@ -51,29 +51,39 @@ export const toggleFavoriteCharacter = (
 export const updateComments = (comment: Comment, id: string) => {
   const characterState = allCharacterVar();
 
-  const updatedCharacter = [
+  const updateComment = [
     ...characterState.allCharacter,
     ...characterState.listFilterCharactersApi,
   ].find((character) => character.id === id);
-
-  if (!updatedCharacter) return;
-
-  const newCharacter = {
-    ...updatedCharacter,
-    comments: [comment, ...(updatedCharacter.comments ?? [])],
-  };
+  if (!updateComment) return; // Si no encontramos el personaje, no hacemos nada.
 
   allCharacterVar({
     ...characterState,
     allCharacter: characterState.allCharacter.map((char) =>
-      char.id === id ? newCharacter : char
+      char.id === id
+        ? {
+            ...char,
+            comments: char.comments ? [...char.comments, comment] : [comment], // Agregar al array si ya existe, si no, crear un nuevo array con el comentario
+          }
+        : char
     ),
     listFilterCharactersApi: characterState.listFilterCharactersApi.map(
-      (char) => (char.id === id ? newCharacter : char)
+      (char) =>
+        char.id === id
+          ? {
+              ...char,
+              comments: char.comments ? [...char.comments, comment] : [comment],
+            }
+          : char
     ),
     characterSelected:
       characterState.characterSelected?.id === id
-        ? newCharacter
+        ? {
+            ...characterState.characterSelected,
+            comments: characterState.characterSelected.comments
+              ? [...characterState.characterSelected.comments, comment]
+              : [comment], // Agregar el comentario al array existente o crear uno nuevo
+          }
         : characterState.characterSelected,
   });
 };
@@ -81,32 +91,45 @@ export const updateComments = (comment: Comment, id: string) => {
 export const deleteComment = (commentId: string, characterId: string) => {
   const characterState = allCharacterVar();
 
-  const updatedCharacter = [
+  const deleteComment = [
     ...characterState.allCharacter,
     ...characterState.listFilterCharactersApi,
   ].find((character) => character.id === characterId);
-
-  if (!updatedCharacter) return;
-
-  const newCharacter = {
-    ...updatedCharacter,
-    comments:
-      updatedCharacter.comments?.filter(
-        (comment) => comment.id !== commentId
-      ) || [],
-  };
+  if (!deleteComment) return; // Si no encontramos el personaje, no hacemos nada.
 
   allCharacterVar({
     ...characterState,
     allCharacter: characterState.allCharacter.map((char) =>
-      char.id === characterId ? newCharacter : char
+      char.id === characterId
+        ? {
+            ...char,
+            comments: char.comments
+              ? char.comments.filter((comment) => comment.id !== commentId) // Eliminar el comentario
+              : [],
+          }
+        : char
     ),
     listFilterCharactersApi: characterState.listFilterCharactersApi.map(
-      (char) => (char.id === characterId ? newCharacter : char)
+      (char) =>
+        char.id === characterId
+          ? {
+              ...char,
+              comments: char.comments
+                ? char.comments.filter((comment) => comment.id !== commentId) // Eliminar el comentario
+                : [],
+            }
+          : char
     ),
     characterSelected:
       characterState.characterSelected?.id === characterId
-        ? newCharacter
+        ? {
+            ...characterState.characterSelected,
+            comments: characterState.characterSelected.comments
+              ? characterState.characterSelected.comments.filter(
+                  (comment) => comment.id !== commentId // Eliminar el comentario
+                )
+              : [],
+          }
         : characterState.characterSelected,
   });
 };
@@ -114,16 +137,6 @@ export const deleteComment = (commentId: string, characterId: string) => {
 export const filterResults = (parameter: string) => {
   const characterState = allCharacterVar();
 
-  if (!parameter.trim()) {
- 
-
-    allCharacterVar({
-      ...characterState,
-      listFilterCharacters: [],
-    });
-
-    return;
-  }
   const { allCharacter, listFilterCharactersApi } = characterState;
 
   let listToShow = allCharacter;
@@ -151,7 +164,6 @@ export const filterResults = (parameter: string) => {
 
 export const orderList = (order: "asc" | "desc") => {
   const characterState = allCharacterVar();
-  
 
   const sortFunction = (a: CharacterVar, b: CharacterVar) =>
     order === "asc"
