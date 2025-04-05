@@ -48,7 +48,6 @@ const CharacterSelected = () => {
         clickLike={() => {
           const toggleInformation = toggleFavoriteCharacter(
             characterSelected,
-            characterState
           );
           allCharacterVar({ ...toggleInformation });
         }}

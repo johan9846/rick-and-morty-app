@@ -42,15 +42,15 @@ const OptionFilter = ({ closeModal }: { closeModal: () => void }) => {
   const handleFilter = async () => {
     try {
       updateLoading(true);
-      console.log(filters, "filters");
-      await fetchCharacters({ variables: filters });
 
       const filtrosG = !filters.gender ? 0 : 1;
       const filtrosS = !filters.species ? 0 : 1;
+
       filterVar({
         ...filterVar(),
         selectedFiltersCount: filtrosG + filtrosS,
       });
+      await fetchCharacters({ variables: filters });
 
       closeModal();
       navigate(ROUTES.HOME);

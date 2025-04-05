@@ -31,7 +31,6 @@ export function useFilteredCharacters() {
     onCompleted: (data) => {
       const resultData = data.characters.results;
 
-      console.log(resultData, "resultData");
       const resultsToShow = resultData
         .map((newChar) => {
           const existingChar = characterState.allCharacter.find(
@@ -58,7 +57,8 @@ export function useFilteredCharacters() {
 
       filterVar({
         ...filterVarState,
-        filteredCharactersCount: resultsToShow.length,
+        filteredCharactersCount:
+          filterVarState.selectedFiltersCount > 0 ? resultsToShow.length : 0,
       });
     },
   });

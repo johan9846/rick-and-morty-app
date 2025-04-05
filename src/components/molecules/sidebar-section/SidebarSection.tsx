@@ -92,10 +92,8 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
                   {/* Icono de "Me gusta" */}
                   <LikeIcon
                     onClick={() => {
-                      const toggleInformation = toggleFavoriteCharacter(
-                        character,
-                        characterState
-                      );
+                      const toggleInformation =
+                        toggleFavoriteCharacter(character);
                       allCharacterVar({ ...toggleInformation });
                     }}
                     like={!!character.isFavorite}

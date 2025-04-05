@@ -1,4 +1,4 @@
-import { allCharacterVar, ICharactersStateProps } from "../apollo/reactiveVars";
+import { allCharacterVar} from "../apollo/reactiveVars";
 
 export interface CharacterVar {
   id: string;
@@ -19,31 +19,42 @@ export interface Comment {
 
 export const toggleFavoriteCharacter = (
   character: CharacterVar,
-  characterState: ICharactersStateProps
+ 
 ) => {
-  const isFavorite = characterState.allCharacter.find(
-    (fav) => fav.id === character.id
-  )?.isFavorite;
-  const updatedCharacter = { ...character, isFavorite: !isFavorite };
 
+  const characterState = allCharacterVar();
   const updatedAllCharacters = characterState.allCharacter.map((char) =>
-    char.id === character.id ? updatedCharacter : char
+    char.id === character.id
+      ? { ...character, isFavorite: !char.isFavorite }
+      : char
   );
 
   const updatedListFilterCharacters = characterState.listFilterCharacters.map(
-    (char) => (char.id === character.id ? updatedCharacter : char)
+    (char) =>
+      char.id === character.id
+        ? { ...character, isFavorite: !char.isFavorite }
+        : char
   );
 
   const updatedListFilterCharactersApi =
     characterState.listFilterCharactersApi.map((char) =>
-      char.id === character.id ? updatedCharacter : char
+      char.id === character.id
+        ? { ...character, isFavorite: !char.isFavorite }
+        : char
     );
 
   return {
     ...characterState,
     allCharacter: updatedAllCharacters,
     listFilterCharactersApi: updatedListFilterCharactersApi,
-    characterSelected: updatedCharacter,
+    characterSelected:
+      characterState.characterSelected?.id === character.id
+        ? {
+            ...characterState.characterSelected,
+            isFavorite: !characterState.characterSelected.isFavorite,
+          }
+        : characterState.characterSelected,
+
     listFilterCharacters: updatedListFilterCharacters,
   };
 };
