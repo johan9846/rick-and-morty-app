@@ -4,6 +4,7 @@ import { useFilteredCharacters } from "../../../hooks/UseAllCharacters/useFilter
 
 import ROUTES from "../../../constants/routes/Routes";
 import { filterVar } from "../../../apollo/reactiveVars";
+import Country from "../Buttons-Menu/ButtonMenu";
 
 const specieButton = [
   { name: "All", value: null },
@@ -16,7 +17,7 @@ const genderButton = [
   { name: "Female", value: "Female" },
 ];
 
-interface IFilterProps {
+export interface IFilterProps {
   gender: string | null;
   species: string | null;
 }
@@ -57,48 +58,23 @@ const OptionFilter = ({ closeModal }: { closeModal: () => void }) => {
     } catch (error) {}
   };
 
+
+  console.log(filters, "filterd")
   return (
     <div>
-      <div className="text-[14px] font-medium font-greycliff mb-2 text-[#6B7280]">
-        Gender
-      </div>
-      <div className="flex gap-2 mb-6 justify-between ">
-        {genderButton.map((option) => (
-          <button
-            key={option.name}
-            className={`w-[102px] h-[44px] font-greycliff rounded-[8px] text-[14px] font-semibold
-      ${
-        filters.gender === option.value
-          ? "bg-[#EEE3FF] text-[#8054C7]"
-          : "border border-[1px] border-[#E5E7EB] text-[#111827]"
-      }`}
-            onClick={() => handleGenderClick(option.value)}
-          >
-            {option.name}
-          </button>
-        ))}
-      </div>
+      <Country
+        title={"Gender"}
+        list={genderButton}
+        filters={filters.gender}
+        onChange={handleGenderClick}
+      />
 
-      <div className="text-[14px] font-medium font-greycliff mb-2 text-[#6B7280]">
-        Specie
-      </div>
-
-      <div className="flex gap-2 mb-6 justify-between">
-        {specieButton.map((option) => (
-          <button
-            key={option.name}
-            className={`w-[102px] h-[44px] font-greycliff rounded-[8px] text-[14px] font-semibold
-      ${
-        filters.species === option.value
-          ? "bg-[#EEE3FF] text-[#8054C7]"
-          : "border border-[1px] border-[#E5E7EB] text-[#111827]"
-      }`}
-            onClick={() => handleSpeciesClick(option.value)}
-          >
-            {option.name}
-          </button>
-        ))}
-      </div>
+      <Country
+        title={"Specie"}
+        list={specieButton}
+        filters={filters.species}
+        onChange={handleSpeciesClick}
+      />
 
       <button
         className="bg-primary600 h-[38px] text-[14px] text-white rounded-lg hover:bg-primary700 
