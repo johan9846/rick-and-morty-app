@@ -6,7 +6,7 @@ import MenuFilterMob from "../../molecules/Menu-Filter-Mobile/MenuFilterMob";
 
 const MainTemplate = () => {
   return (
-    <main className=" w-screen h-screen">
+    <main className="md:hidden w-screen h-screen">
       <Routes>
         <Route path={ROUTES.HOME} element={<SideBar />} />
         <Route
