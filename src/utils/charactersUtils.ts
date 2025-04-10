@@ -1,4 +1,4 @@
-import { allCharacterVar} from "../apollo/reactiveVars";
+import { allCharacterVar } from "../apollo/reactiveVars";
 
 export interface CharacterVar {
   id: string;
@@ -17,11 +17,7 @@ export interface Comment {
   comment: string;
 }
 
-export const toggleFavoriteCharacter = (
-  character: CharacterVar,
- 
-) => {
-
+export const toggleFavoriteCharacter = (character: CharacterVar) => {
   const characterState = allCharacterVar();
   const updatedAllCharacters = characterState.allCharacter.map((char) =>
     char.id === character.id
@@ -47,14 +43,7 @@ export const toggleFavoriteCharacter = (
     ...characterState,
     allCharacter: updatedAllCharacters,
     listFilterCharactersApi: updatedListFilterCharactersApi,
-    characterSelected:
-      characterState.characterSelected?.id === character.id
-        ? {
-            ...characterState.characterSelected,
-            isFavorite: !characterState.characterSelected.isFavorite,
-          }
-        : characterState.characterSelected,
-
+    characterSelected:  { ...character, isFavorite: !character.isFavorite },
     listFilterCharacters: updatedListFilterCharacters,
   };
 };

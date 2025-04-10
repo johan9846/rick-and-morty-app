@@ -93,8 +93,12 @@ const SidebarSection = ({ title, list }: SidebarSectionProps) => {
                   <LikeIcon
                     onClick={() => {
                       const toggleInformation =
-                        toggleFavoriteCharacter(character);
-                      allCharacterVar({ ...toggleInformation });
+                      toggleFavoriteCharacter(character);
+                      allCharacterVar({
+                        ...toggleInformation
+                      });
+
+                      navigate(ROUTES.SELECTED_CHARACTER);
                     }}
                     like={!!character.isFavorite}
                   />

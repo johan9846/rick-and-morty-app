@@ -46,9 +46,7 @@ const CharacterSelected = () => {
         name={characterSelected?.name || "Desconocido"}
         like={!!characterSelected?.isFavorite}
         clickLike={() => {
-          const toggleInformation = toggleFavoriteCharacter(
-            characterSelected,
-          );
+          const toggleInformation = toggleFavoriteCharacter(characterSelected);
           allCharacterVar({ ...toggleInformation });
         }}
       />
