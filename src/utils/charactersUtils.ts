@@ -1,4 +1,5 @@
 import { allCharacterVar } from "../apollo/reactiveVars";
+import { Character } from "../hooks/interfaces/allCharacter.interface";
 
 export interface CharacterVar {
   id: string;
@@ -43,7 +44,7 @@ export const toggleFavoriteCharacter = (character: CharacterVar) => {
     ...characterState,
     allCharacter: updatedAllCharacters,
     listFilterCharactersApi: updatedListFilterCharactersApi,
-    characterSelected:  { ...character, isFavorite: !character.isFavorite },
+    characterSelected: { ...character, isFavorite: !character.isFavorite },
     listFilterCharacters: updatedListFilterCharacters,
   };
 };
@@ -165,19 +166,19 @@ export const filterResults = (parameter: string) => {
 export const orderList = (order: "asc" | "desc") => {
   const characterState = allCharacterVar();
 
-  const sortFunction = (a: CharacterVar, b: CharacterVar) =>
-    order === "asc"
-      ? a.name.localeCompare(b.name)
-      : b.name.localeCompare(a.name);
+  const sortFunction = (list: Character[]) =>
+    [...list].sort((a, b) =>
+      order === "asc"
+        ? a.name.localeCompare(b.name)
+        : b.name.localeCompare(a.name)
+    );  
 
   allCharacterVar({
     ...characterState,
-    allCharacter: [...characterState.allCharacter].sort(sortFunction),
-    listFilterCharactersApi: [...characterState.listFilterCharactersApi].sort(
-      sortFunction
+    allCharacter: sortFunction(characterState.allCharacter),
+    listFilterCharactersApi: sortFunction(
+      characterState.listFilterCharactersApi
     ),
-    listFilterCharacters: [...characterState.listFilterCharacters].sort(
-      sortFunction
-    ),
+    listFilterCharacters: sortFunction(characterState.listFilterCharacters),
   });
 };
